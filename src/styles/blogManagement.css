@@ -1,0 +1,293 @@
+.blog-container {
+  background: rgba(26, 41, 64, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.blog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.blog-header h2 {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.blog-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.blog-actions .ant-input-affix-wrapper {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  border-radius: 8px;
+}
+
+.blog-actions .ant-input-affix-wrapper input {
+  background: transparent;
+  color: #fff;
+}
+
+.blog-actions .ant-input-affix-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.blog-actions .ant-input-affix-wrapper .anticon {
+  color: rgba(100, 181, 246, 0.8);
+}
+
+.blog-actions .ant-btn-primary {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+  transition: all 0.3s;
+}
+
+.blog-actions .ant-btn-primary:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Table Styles */
+.blog-table {
+  background: transparent;
+}
+
+.blog-table .ant-table {
+  background: rgba(15, 30, 50, 0.5);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.blog-table .ant-table-thead > tr > th:hover {
+  background: rgba(100, 181, 246, 0.3) !important;
+}
+
+.blog-table .ant-table-thead > tr > th {
+  background: rgba(100, 181, 246, 0.2);
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.blog-table .ant-table-tbody > tr {
+  background: transparent;
+}
+
+.blog-table .ant-table-tbody > tr:hover > td {
+    background: rgba(100, 181, 246, 0.2) !important;
+}
+
+.blog-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid rgba(100, 181, 246, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.blog-table .ant-table-pagination {
+  padding: 16px;
+}
+
+.blog-table .ant-pagination-item {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.blog-table .ant-pagination-item a {
+  color: #fff;
+}
+
+.blog-table .ant-pagination-item-active {
+  background: rgba(100, 181, 246, 0.3);
+  border-color: #64b5f6;
+}
+
+.blog-table .ant-pagination-item-active a {
+  color: #64b5f6;
+}
+
+.blog-table .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #fff !important;
+}
+
+/* Modal Styles */
+.blog-modal .ant-modal-content {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 16px;
+}
+
+.blog-modal .ant-modal-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.blog-modal .ant-modal-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.blog-modal .ant-modal-close {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.blog-modal .ant-modal-close:hover {
+  color: #fff;
+}
+
+.blog-modal .ant-modal-body {
+  padding: 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.blog-modal .ant-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.blog-modal .ant-modal-body::-webkit-scrollbar-track {
+  background: rgba(15, 30, 50, 0.5);
+}
+
+.blog-modal .ant-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.3);
+  border-radius: 3px;
+}
+
+.blog-modal .ant-modal-footer {
+  border-top: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.blog-modal .ant-form-item-label > label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.blog-modal .ant-input,
+.blog-modal .ant-input-textarea {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.blog-modal .ant-input::placeholder,
+.blog-modal .ant-input-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.blog-modal .ant-input:hover,
+.blog-modal .ant-input-textarea:hover {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.4);
+}
+
+.blog-modal .ant-input:focus,
+.blog-modal .ant-input-textarea:focus {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.4);
+  box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+.blog-modal .ant-input-data-count {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.blog-modal .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #fff !important;
+}
+
+.blog-modal .ant-select-arrow {
+  color: rgba(100, 181, 246, 0.8);
+}
+
+.blog-modal .ant-btn-primary {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+}
+
+.blog-modal .ant-btn-primary:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+}
+
+.blog-modal .ant-btn-default {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #fff;
+}
+
+.blog-modal .ant-btn-default:hover {
+  background: rgba(15, 30, 50, 0.8);
+  border-color: #64b5f6;
+  color: #64b5f6;
+}
+
+/* Select Dropdown */
+.ant-select-dropdown {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item {
+  color: #fff;
+}
+
+.ant-select-item:hover {
+  background: rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item-option-selected {
+  background: rgba(100, 181, 246, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blog-container {
+    padding: 20px;
+  }
+
+  .blog-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .blog-header h2 {
+    font-size: 24px;
+  }
+
+  .blog-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .blog-actions .ant-input-affix-wrapper {
+    width: 100%;
+  }
+
+  .blog-actions .ant-btn {
+    width: 100%;
+  }
+}

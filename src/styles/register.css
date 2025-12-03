@@ -1,0 +1,234 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a1628 0%, #1a2940 50%, #2d4a6e 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+/* Decorative Elements */
+.register-container::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(100, 181, 246, 0.2) 0%, rgba(100, 181, 246, 0) 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.register-container::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(118, 255, 3, 0.1) 0%, rgba(118, 255, 3, 0) 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.register-card {
+  width: 100%;
+  max-width: 550px;
+  background: rgba(26, 41, 64, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.register-card .ant-card-head {
+  background: transparent;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.register-card .ant-card-head-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.register-card .ant-card-body {
+  padding: 30px;
+}
+
+/* Form Label */
+.register-form .ant-form-item-label > label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Custom Input Class */
+.register-form .custom-input.ant-input,
+.register-form .custom-input.ant-input-password,
+.register-form .custom-input.ant-picker,
+.register-form .custom-input .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+/* Password Input inner */
+.register-form .custom-input.ant-input-password input {
+  background: transparent;
+  color: #ffffff;
+}
+
+/* Placeholder */
+.register-form .custom-input.ant-input::placeholder,
+.register-form .custom-input.ant-input-password input::placeholder,
+.register-form .custom-input.ant-picker input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Icons */
+.register-form .input-icon {
+  color: rgba(255, 255, 255, 0.6);
+  margin-right: 8px;
+}
+
+.register-form .custom-input .ant-picker-suffix,
+.register-form .custom-input .ant-select-arrow {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Hover State */
+.register-form .custom-input.ant-input:hover,
+.register-form .custom-input.ant-input-password:hover,
+.register-form .custom-input.ant-picker:hover,
+.register-form .custom-input .ant-select-selector:hover {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.7);
+}
+
+/* Focus State */
+.register-form .custom-input.ant-input:focus,
+.register-form .custom-input.ant-input-password:focus,
+.register-form .custom-input.ant-input-password:focus-within,
+.register-form .custom-input.ant-picker:focus,
+.register-form .custom-input.ant-picker-focused,
+.register-form .custom-input.ant-select-focused .ant-select-selector {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.8);
+  box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+/* Error State */
+.register-form .ant-form-item-has-error .custom-input.ant-input,
+.register-form .ant-form-item-has-error .custom-input.ant-input-password,
+.register-form .ant-form-item-has-error .custom-input.ant-picker,
+.register-form .ant-form-item-has-error .custom-input .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6);
+  border-color: #ff4d4f;
+}
+
+.register-form .ant-form-item-explain-error {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Select Dropdown */
+.ant-select-dropdown {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item {
+  color: #fff;
+}
+
+.ant-select-item:hover {
+  background: rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item-option-selected {
+  background: rgba(100, 181, 246, 0.3);
+}
+
+/* DatePicker Panel */
+.ant-picker-dropdown {
+  background: rgba(26, 41, 64, 0.98);
+}
+
+.ant-picker-panel-container {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-picker-header,
+.ant-picker-content th,
+.ant-picker-cell {
+  color: #fff;
+}
+
+.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
+  background: rgba(100, 181, 246, 0.2);
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: #64b5f6;
+  color: #0a1628;
+}
+
+/* Submit Button */
+.register-submit-button {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  border-radius: 25px;
+  height: 45px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.register-submit-button:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Login Link */
+.register-login-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-login-link a {
+  color: #64b5f6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.register-login-link a:hover {
+  color: #409cff;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-card {
+    max-width: 100%;
+  }
+
+  .register-card .ant-card-body {
+    padding: 20px;
+  }
+}

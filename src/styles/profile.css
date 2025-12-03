@@ -1,0 +1,167 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: rgba(26, 41, 64, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.profile-card .ant-card-head {
+  background: transparent;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.profile-card .ant-card-head-title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.profile-card .ant-card-body {
+  padding: 30px;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.profile-avatar {
+  background: linear-gradient(135deg, #64b5f6 0%, #409cff 100%);
+  margin-bottom: 15px;
+}
+
+.profile-header h2 {
+  color: #fff;
+  margin: 10px 0 5px;
+  font-size: 24px;
+}
+
+.profile-role {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-form .ant-form-item-label > label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.profile-input.ant-input,
+.profile-input.ant-picker,
+.profile-input .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.profile-input.ant-input:disabled {
+  background: rgba(15, 30, 50, 0.3);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+.profile-input.ant-input::placeholder,
+.profile-input.ant-picker input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.profile-input.ant-input:hover:not(:disabled),
+.profile-input.ant-picker:hover,
+.profile-input .ant-select-selector:hover {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.7);
+}
+
+.profile-input.ant-input:focus,
+.profile-input.ant-picker-focused,
+.profile-input.ant-select-focused .ant-select-selector {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.8);
+  box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+.profile-input .ant-picker-suffix,
+.profile-input .ant-select-arrow {
+  color: rgba(100, 181, 246, 0.8);
+}
+
+.profile-submit-button {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  border-radius: 25px;
+  height: 45px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.profile-submit-button:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+.ant-select-dropdown {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item {
+  color: #fff;
+}
+
+.ant-select-item:hover {
+  background: rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item-option-selected {
+  background: rgba(100, 181, 246, 0.3);
+}
+
+.ant-picker-dropdown {
+  background: rgba(26, 41, 64, 0.98);
+}
+
+.ant-picker-panel-container {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-picker-header,
+.ant-picker-content th,
+.ant-picker-cell {
+  color: #fff;
+}
+
+.ant-picker-cell:hover:not(.ant-picker-cell-selected):not(.ant-picker-cell-disabled) .ant-picker-cell-inner {
+  background: rgba(100, 181, 246, 0.2);
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  background: #64b5f6;
+  color: #0a1628;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    max-width: 100%;
+  }
+
+  .profile-card .ant-card-body {
+    padding: 20px;
+  }
+}

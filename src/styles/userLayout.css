@@ -1,0 +1,171 @@
+.user-layout {
+  min-height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(135deg, #0a1628 0%, #1a2940 50%, #2d4a6e 100%);
+  overflow: hidden;
+}
+
+.user-sidebar {
+  background: rgba(26, 41, 64, 0.95);
+  border-right: 1px solid rgba(100, 181, 246, 0.2);
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+}
+
+/* Custom Scrollbar cho Sidebar */
+.user-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-sidebar::-webkit-scrollbar-track {
+  background: rgba(15, 30, 50, 0.5);
+}
+
+.user-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.3);
+  border-radius: 3px;
+}
+
+.user-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 181, 246, 0.5);
+}
+
+.user-sidebar .ant-layout-sider-trigger {
+  background: rgba(15, 30, 50, 0.8);
+  border-top: 1px solid rgba(100, 181, 246, 0.2);
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+}
+
+/* Sidebar Header - Back Button */
+.sidebar-header {
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+  background: rgba(15, 30, 50, 0.3);
+}
+
+.back-home-button {
+  color: rgba(255, 255, 255, 0.9);
+  height: 40px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.back-home-button:hover {
+  background: rgba(100, 181, 246, 0.2);
+  color: #64b5f6;
+}
+
+.back-home-button .anticon {
+  font-size: 16px;
+}
+
+/* User Info */
+.user-info {
+  padding: 30px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+  background: rgba(15, 30, 50, 0.5);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #64b5f6 0%, #409cff 100%);
+  margin-bottom: 15px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.user-name {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+}
+
+.user-email {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  display: block;
+  word-break: break-word;
+}
+
+.user-menu {
+  background: transparent;
+  border: none;
+  margin-top: 20px;
+  padding-bottom: 60px;
+}
+
+.user-menu .ant-menu-item {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 8px 16px;
+  border-radius: 8px;
+}
+
+.user-menu .ant-menu-item:hover {
+  background: rgba(100, 181, 246, 0.2);
+  color: #64b5f6;
+}
+
+.user-menu .ant-menu-item-selected {
+  background: rgba(100, 181, 246, 0.3);
+  color: #64b5f6;
+}
+
+.user-menu .ant-menu-item-danger {
+  color: rgba(255, 107, 107, 0.8);
+}
+
+.user-menu .ant-menu-item-danger:hover {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ff6b6b;
+}
+
+.user-content {
+  padding: 30px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar cho Content */
+.user-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.user-content::-webkit-scrollbar-track {
+  background: rgba(15, 30, 50, 0.3);
+}
+
+.user-content::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.4);
+  border-radius: 4px;
+}
+
+.user-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 181, 246, 0.6);
+}
+
+@media (max-width: 768px) {
+  .user-sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  .user-content {
+    padding: 20px;
+    height: auto;
+  }
+}

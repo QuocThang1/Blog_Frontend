@@ -1,0 +1,87 @@
+body {
+  background: #f6f9fb !important; 
+  margin: 0 !important;
+  min-height: 100vh;;
+}
+
+.ant-popconfirm .ant-popover-inner {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-popconfirm .ant-popover-message-title,
+.ant-popconfirm .ant-popover-inner-content,
+.ant-popconfirm .ant-popconfirm-title {
+  color: #ffffff !important;
+}
+
+.ant-popconfirm .ant-popover-message-title,
+.ant-popconfirm .ant-popconfirm-title {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.ant-popconfirm .ant-popconfirm-description {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.ant-popconfirm .ant-popover-arrow-content {
+  background: rgba(26, 41, 64, 0.98);
+}
+
+.ant-popconfirm .ant-btn-primary {
+  background: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.ant-popconfirm .ant-btn-primary:hover {
+  background: #ff7875;
+  border-color: #ff7875;
+}
+
+.ant-popconfirm .ant-btn-default {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #fff;
+}
+
+.ant-popconfirm .ant-btn-default:hover {
+  background: rgba(15, 30, 50, 0.8);
+  border-color: #64b5f6;
+  color: #64b5f6;
+}
+
+.ant-popconfirm .ant-popover-message-icon {
+  color: #ff4d4f !important;
+}
+
+.ant-table-tbody > tr:has(.ant-popover-open) > td {
+  background: transparent !important;
+}
+
+.ant-table-tbody > tr:has(.ant-popover-open):hover > td {
+  background: transparent !important;
+}
+
+.ant-popconfirm:hover ~ table .ant-table-tbody > tr:hover > td,
+body:has(.ant-popconfirm) .ant-table-tbody > tr:hover > td {
+  background: transparent !important;
+}
+
+.ant-select-dropdown {
+  background: rgba(26, 41, 64, 0.98) !important;
+  border: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.ant-select-item {
+  color: #fff !important;
+}
+
+.ant-select-item:hover {
+  background: rgba(100, 181, 246, 0.2) !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(100, 181, 246, 0.3) !important;
+  color: #64b5f6 !important;
+}

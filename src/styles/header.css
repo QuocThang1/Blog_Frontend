@@ -1,0 +1,98 @@
+.header {
+  background: linear-gradient(90deg, #0a1628 0%, #1a2940 100%);
+  padding: 15px 50px;
+  display: flex;
+  justify-content: space-between; /* Giữ nguyên */
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Wrapper cho Logo và Menu */
+.header-left-section {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Khoảng cách giữa logo và menu */
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.header-logo-icon span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #0a1628;
+}
+
+.header-logo-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Center Navigation - Home & Blog */
+.header-center-nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  /* Xóa margin-left */
+}
+
+/* Right Navigation - Auth */
+.header-nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.header-nav-link {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.header-nav-link:hover {
+  color: #64b5f6;
+}
+
+.header-user-button {
+  color: #fff;
+  border: 1px solid #64b5f6;
+  border-radius: 20px;
+  padding: 5px 20px;
+  height: auto;
+}
+
+.header-get-started-button {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #64b5f6;
+  border-radius: 20px;
+  padding: 5px 20px;
+  height: auto;
+}
+
+.header-get-started-button:hover {
+  background: rgba(100, 181, 246, 0.1);
+  color: #64b5f6;
+  border-color: #64b5f6;
+}
