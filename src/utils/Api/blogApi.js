@@ -15,6 +15,11 @@ const getBlogsByCategoryApi = (categoryId) => {
     return axios.get(URL_API);
 };
 
+const getBlogsByTagApi = (tagId) => {
+    const URL_API = `/v1/api/blogs/tag/${tagId}`;
+    return axios.get(URL_API);
+};
+
 const getMyBlogsApi = () => {
     const URL_API = "/v1/api/blogs/my-blogs";
     return axios.get(URL_API);
@@ -29,6 +34,7 @@ const createBlogApi = (blogData) => {
         image: blogData.image,
         imagePublicId: blogData.imagePublicId,
         categoryId: blogData.categoryId,
+        tags: blogData.tags || [],
     };
     return axios.post(URL_API, data);
 };
@@ -42,6 +48,7 @@ const updateBlogApi = (blogId, blogData) => {
         image: blogData.image,
         imagePublicId: blogData.imagePublicId,
         categoryId: blogData.categoryId,
+        tags: blogData.tags || [],
     };
     return axios.put(URL_API, data);
 };
@@ -65,4 +72,5 @@ export {
     updateBlogApi,
     deleteBlogApi,
     likeBlogApi,
+    getBlogsByTagApi
 };

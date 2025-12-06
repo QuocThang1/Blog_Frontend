@@ -161,6 +161,25 @@
   margin-bottom: 0;
 }
 
+/* Blog Detail Tags */
+.blog-detail-tags {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(100, 181, 246, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(100, 181, 246, 0.1);
+}
+
+.blog-detail-tags .ant-tag {
+    margin: 4px;
+    transition: all 0.3s ease;
+}
+
+.blog-detail-tags .ant-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .blog-detail-container {

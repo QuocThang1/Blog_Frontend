@@ -119,6 +119,19 @@ const BlogDetailManagement = () => {
                                         <Tag color="green">{blog.category.name}</Tag>
                                     </Space>
                                 )}
+
+                                {blog.tags && blog.tags.length > 0 && (
+                                    <Space>
+                                        <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Tags:</span>
+                                        <Space size={[0, 4]} wrap>
+                                            {blog.tags.map((tag) => (
+                                                <Tag key={tag._id} color={tag.color}>
+                                                    {tag.name}
+                                                </Tag>
+                                            ))}
+                                        </Space>
+                                    </Space>
+                                )}
                             </Space>
                         </div>
 
