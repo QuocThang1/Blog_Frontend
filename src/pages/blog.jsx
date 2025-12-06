@@ -6,6 +6,7 @@ import { getAllBlogsApi } from "../utils/Api/blogApi";
 import { getAllCategoriesApi } from "../utils/Api/categoryApi";
 import { getAllTagsApi } from "../utils/Api/tagApi";
 import { toast } from "react-toastify";
+import Top5Blogs from "../components/top5Blogs";
 import "../styles/blog.css";
 
 const { Search } = Input;
@@ -98,6 +99,7 @@ const Blog = () => {
 
     return (
         <div className="blog-page">
+            <Top5Blogs />
             <div className="blog-header">
                 <h1 className="blog-title">BLOGS</h1>
 

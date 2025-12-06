@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Button, Space, Spin, Avatar, Tag } from "antd";
 import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, UserOutlined, CalendarOutlined, FolderOutlined, TagOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { getBlogByIdApi, likeBlogApi } from "../utils/Api/blogApi";
+import { getBlogByIdApi, likeBlogApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
 import { AuthContext } from "../context/auth.context";
 import CommentSection from "../components/commentSection";
 import AnotherBlogs from "../components/anotherBlogs";
@@ -16,6 +16,7 @@ const BlogDetail = () => {
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [liking, setLiking] = useState(false);
+    const viewCountedRef = useRef(new Set());
 
     useEffect(() => {
         fetchBlogDetail();
@@ -27,6 +28,8 @@ const BlogDetail = () => {
             const res = await getBlogByIdApi(id);
             if (res && res.EC === 0) {
                 setBlog(res.data);
+
+                await handleIncrementView(id);
             } else {
                 toast.error(res.message || "Failed to fetch blog");
             }
@@ -35,6 +38,33 @@ const BlogDetail = () => {
             toast.error("Failed to fetch blog");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleIncrementView = async (blogId) => {
+        try {
+            if (viewCountedRef.current.has(blogId)) {
+                console.log('Already counted in this render - skipping (Strict Mode protection)');
+                return;
+            }
+
+            viewCountedRef.current.add(blogId);
+
+            const viewedBlogs = JSON.parse(sessionStorage.getItem('viewedBlogs') || '[]');
+
+            if (!viewedBlogs.includes(blogId)) {
+
+                await incrementBlogViewsApi(blogId);
+
+                viewedBlogs.push(blogId);
+                sessionStorage.setItem('viewedBlogs', JSON.stringify(viewedBlogs));
+
+                console.log('View counted for blog:', blogId);
+            } else {
+                console.log('Blog already viewed in this session - skipping');
+            }
+        } catch (error) {
+            console.error("Increment view error:", error);
         }
     };
 
@@ -49,7 +79,11 @@ const BlogDetail = () => {
             const res = await likeBlogApi(id);
             if (res && res.EC === 0) {
                 toast.success("Liked!");
-                fetchBlogDetail();
+
+                const blogRes = await getBlogByIdApi(id);
+                if (blogRes && blogRes.EC === 0) {
+                    setBlog(blogRes.data);
+                }
             } else {
                 toast.error(res.message || "Failed to like blog");
             }

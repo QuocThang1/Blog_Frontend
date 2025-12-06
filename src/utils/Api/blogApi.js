@@ -58,6 +58,16 @@ const deleteBlogApi = (blogId) => {
     return axios.delete(URL_API);
 };
 
+const incrementBlogViewsApi = (blogId) => {
+    const URL_API = `/v1/api/blogs/${blogId}/increment-views`;
+    return axios.post(URL_API);
+}
+
+const getTop5BlogsApi = () => {
+    const URL_API = `/v1/api/blogs/top5`;
+    return axios.get(URL_API);
+}
+
 const likeBlogApi = (blogId) => {
     const URL_API = `/v1/api/blogs/${blogId}/like`;
     return axios.post(URL_API);
@@ -71,6 +81,8 @@ export {
     createBlogApi,
     updateBlogApi,
     deleteBlogApi,
+    incrementBlogViewsApi,
+    getTop5BlogsApi,
     likeBlogApi,
     getBlogsByTagApi
 };
