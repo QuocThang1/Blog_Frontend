@@ -1,0 +1,323 @@
+/* ==================== ADMIN MANAGEMENT COMMON STYLES ==================== */
+
+/* Container */
+.admin-management-container {
+  background: rgba(26, 41, 64, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.admin-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.admin-management-header h2 {
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Actions */
+.admin-management-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.admin-management-actions .ant-input-affix-wrapper {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  border-radius: 8px;
+}
+
+.admin-management-actions .ant-input-affix-wrapper input {
+  background: transparent;
+  color: #fff;
+}
+
+.admin-management-actions .ant-input-affix-wrapper input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.admin-management-actions .ant-input-affix-wrapper .anticon {
+  color: rgba(100, 181, 246, 0.8);
+}
+
+.admin-management-actions .ant-btn-primary {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+  transition: all 0.3s;
+}
+
+.admin-management-actions .ant-btn-primary:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Table Styles */
+.admin-management-table {
+  background: transparent;
+}
+
+.admin-management-table .ant-table {
+  background: rgba(15, 30, 50, 0.5);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.admin-management-table .ant-table-thead > tr > th {
+  background: rgba(100, 181, 246, 0.2);
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.admin-management-table .ant-table-thead > tr > th:hover {
+  background: rgba(100, 181, 246, 0.3) !important;
+}
+
+.admin-management-table .ant-table-tbody > tr {
+  background: transparent;
+}
+
+.admin-management-table .ant-table-tbody > tr:hover > td {
+  background: rgba(100, 181, 246, 0.2) !important;
+}
+
+.admin-management-table .ant-table-tbody > tr > td {
+  border-bottom: 1px solid rgba(100, 181, 246, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-management-table .ant-table-pagination {
+  padding: 16px;
+}
+
+.admin-management-table .ant-pagination-item {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+.admin-management-table .ant-pagination-item a {
+  color: #fff;
+}
+
+.admin-management-table .ant-pagination-item-active {
+  background: rgba(100, 181, 246, 0.3);
+  border-color: #64b5f6;
+}
+
+.admin-management-table .ant-pagination-item-active a {
+  color: #64b5f6;
+}
+
+.admin-management-table .ant-pagination-prev button,
+.admin-management-table .ant-pagination-next button {
+  color: #fff;
+}
+
+.admin-management-table .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #fff !important;
+}
+
+.admin-management-table .ant-select-arrow {
+  color: #fff;
+}
+
+/* Fixed column styles */
+.admin-management-table .ant-table-cell-fix-right {
+  background: rgba(15, 30, 50, 0.5) !important;
+}
+
+.admin-management-table .ant-table-tbody > tr:hover .ant-table-cell-fix-right {
+  background: rgba(100, 181, 246, 0.2) !important;
+}
+
+.admin-management-table .ant-table-thead > tr > th.ant-table-cell-fix-right {
+  background: rgba(100, 181, 246, 0.2) !important;
+}
+
+.admin-management-table .ant-table-thead > tr > th.ant-table-cell-fix-right:hover {
+  background: rgba(100, 181, 246, 0.3) !important;
+}
+
+/* Modal Styles */
+.admin-management-modal .ant-modal-content {
+  background: rgba(26, 41, 64, 0.98);
+  border: 1px solid rgba(100, 181, 246, 0.2);
+  border-radius: 16px;
+}
+
+.admin-management-modal .ant-modal-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.admin-management-modal .ant-modal-title {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.admin-management-modal .ant-modal-close {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.admin-management-modal .ant-modal-close:hover {
+  color: #fff;
+}
+
+.admin-management-modal .ant-modal-body {
+  padding: 24px;
+}
+
+.admin-management-modal .ant-modal-footer {
+  border-top: 1px solid rgba(100, 181, 246, 0.2);
+}
+
+.admin-management-modal .ant-form-item-label > label {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.admin-management-modal .ant-input,
+.admin-management-modal .ant-input-textarea {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #fff;
+  border-radius: 8px;
+}
+
+.admin-management-modal .ant-input::placeholder,
+.admin-management-modal .ant-input-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.admin-management-modal .ant-input:hover,
+.admin-management-modal .ant-input-textarea:hover {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.4);
+}
+
+.admin-management-modal .ant-input:focus,
+.admin-management-modal .ant-input-textarea:focus {
+  border-color: #64b5f6;
+  background: rgba(15, 30, 50, 0.8);
+  box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+.admin-management-modal .ant-input-data-count {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-management-modal .ant-select-selector {
+  background: rgba(15, 30, 50, 0.6) !important;
+  border: 1px solid rgba(100, 181, 246, 0.3) !important;
+  color: #fff !important;
+}
+
+.admin-management-modal .ant-select-arrow {
+  color: rgba(100, 181, 246, 0.8);
+}
+
+.admin-management-modal .ant-btn-default {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  color: #fff;
+}
+
+.admin-management-modal .ant-btn-default:hover {
+  background: rgba(15, 30, 50, 0.8);
+  border-color: #64b5f6;
+  color: #64b5f6;
+}
+
+.admin-management-modal .ant-btn-primary {
+  background: linear-gradient(90deg, #64b5f6 0%, #409cff 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+}
+
+.admin-management-modal .ant-btn-primary:hover {
+  background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
+  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
+}
+
+/* Color Picker (for Tag management) */
+.admin-management-modal .ant-color-picker-trigger {
+  background: rgba(15, 30, 50, 0.6);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  border-radius: 8px;
+  height: 40px;
+}
+
+.admin-management-modal .ant-color-picker-trigger:hover {
+  border-color: #64b5f6;
+}
+
+.admin-management-modal .ant-color-picker-trigger .ant-color-picker-color-block {
+  border-radius: 6px;
+}
+
+.admin-management-modal .ant-color-picker-trigger .ant-color-picker-trigger-text {
+  color: #fff;
+}
+
+/* Form Item Error State */
+.admin-management-modal .ant-form-item-has-error .ant-input,
+.admin-management-modal .ant-form-item-has-error .ant-input-textarea,
+.admin-management-modal .ant-form-item-has-error .ant-select-selector,
+.admin-management-modal .ant-form-item-has-error .ant-color-picker-trigger {
+  border-color: #ff4d4f;
+}
+
+.admin-management-modal .ant-form-item-explain-error {
+  color: #ff7875;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .admin-management-container {
+    padding: 20px;
+  }
+
+  .admin-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-management-header h2 {
+    font-size: 24px;
+  }
+
+  .admin-management-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .admin-management-actions .ant-input-affix-wrapper {
+    width: 100%;
+  }
+
+  .admin-management-actions .ant-btn {
+    width: 100%;
+  }
+}

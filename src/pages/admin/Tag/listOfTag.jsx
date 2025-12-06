@@ -2,78 +2,78 @@ import { useState, useEffect } from "react";
 import { Table, Button, Space, Popconfirm, Tag, Input, Empty } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { getAllCategoriesApi, deleteCategoryApi } from "../../../utils/Api/categoryApi";
-import CategoryModal from "./categoryModal";
+import { getAllTagsApi, deleteTagApi } from "../../../utils/Api/tagApi";
+import TagModal from "./tagModal";
 import "../../../styles/adminManagement.css";
 
-const ListOfCategory = () => {
-    const [categories, setCategories] = useState([]);
+const ListOfTag = () => {
+    const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingCategory, setEditingCategory] = useState(null);
+    const [editingTag, setEditingTag] = useState(null);
     const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
-        fetchCategories();
+        fetchTags();
     }, []);
 
-    const fetchCategories = async () => {
+    const fetchTags = async () => {
         setLoading(true);
         try {
-            const res = await getAllCategoriesApi();
+            const res = await getAllTagsApi();
             if (res && res.EC === 0) {
-                setCategories(res.data || []);
+                setTags(res.data || []);
             } else {
-                toast.error(res.EM || "Failed to fetch categories");
+                toast.error(res.EM || "Failed to fetch tags");
             }
         } catch (error) {
-            console.error("Fetch categories error:", error);
-            toast.error("Failed to fetch categories");
+            console.error("Fetch tags error:", error);
+            toast.error("Failed to fetch tags");
         } finally {
             setLoading(false);
         }
     };
 
     const handleCreate = () => {
-        setEditingCategory(null);
+        setEditingTag(null);
         setIsModalOpen(true);
     };
 
     const handleEdit = (record) => {
-        setEditingCategory(record);
+        setEditingTag(record);
         setIsModalOpen(true);
     };
 
-    const handleDelete = async (categoryId) => {
+    const handleDelete = async (tagId) => {
         try {
-            const res = await deleteCategoryApi(categoryId);
+            const res = await deleteTagApi(tagId);
             if (res && res.EC === 0) {
-                toast.success(res.EM || "Category deleted successfully");
-                fetchCategories();
+                toast.success(res.EM || "Tag deleted successfully");
+                fetchTags();
             } else {
-                toast.error(res.EM || "Failed to delete category");
+                toast.error(res.EM || "Failed to delete tag");
             }
         } catch (error) {
-            console.error("Delete category error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to delete category");
+            console.error("Delete tag error:", error);
+            toast.error(error?.response?.data?.EM || "Failed to delete tag");
         }
     };
 
     const handleModalSuccess = () => {
         setIsModalOpen(false);
-        setEditingCategory(null);
-        fetchCategories();
+        setEditingTag(null);
+        fetchTags();
     };
 
     const handleModalCancel = () => {
         setIsModalOpen(false);
-        setEditingCategory(null);
+        setEditingTag(null);
     };
 
-    const filteredCategories = categories.filter(
-        (category) =>
-            category.name?.toLowerCase().includes(searchText.toLowerCase()) ||
-            category.description?.toLowerCase().includes(searchText.toLowerCase())
+    const filteredTags = tags.filter(
+        (tag) =>
+            tag.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+            tag.description?.toLowerCase().includes(searchText.toLowerCase())
     );
 
     const columns = [
@@ -88,22 +88,42 @@ const ListOfCategory = () => {
             title: "Name",
             dataIndex: "name",
             key: "name",
-            width: 140,
+            width: 180,
             sorter: (a, b) => a.name.localeCompare(b.name),
-            render: (text) => <Tag color="blue">{text}</Tag>,
+            render: (text, record) => (
+                <Tag color={record.color} style={{ fontSize: '14px', padding: '4px 12px' }}>
+                    {text}
+                </Tag>
+            ),
+        },
+        {
+            title: "Slug",
+            dataIndex: "slug",
+            key: "slug",
+            width: 180,
+            render: (text) => (
+                <span style={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontFamily: 'monospace',
+                    fontSize: '13px'
+                }}>
+                    {text}
+                </span>
+            ),
         },
         {
             title: "Description",
             dataIndex: "description",
             key: "description",
-            width: 300,
+            width: 280,
             render: (text) => (
                 <div style={{
                     whiteSpace: "normal",
                     wordWrap: "break-word",
-                    lineHeight: "1.5"
+                    lineHeight: "1.5",
+                    color: 'rgba(255, 255, 255, 0.8)'
                 }}>
-                    {text}
+                    {text || <span style={{ fontStyle: 'italic', opacity: 0.5 }}>No description</span>}
                 </div>
             ),
         },
@@ -131,8 +151,8 @@ const ListOfCategory = () => {
                         Edit
                     </Button>
                     <Popconfirm
-                        title="Delete Category"
-                        description="Are you sure to delete this category?"
+                        title="Delete Tag"
+                        description="Are you sure to delete this tag?"
                         onConfirm={() => handleDelete(record._id)}
                         okText="Yes"
                         cancelText="No"
@@ -150,10 +170,10 @@ const ListOfCategory = () => {
     return (
         <div className="admin-management-container">
             <div className="admin-management-header">
-                <h2>Category Management</h2>
+                <h2>Tag Management</h2>
                 <div className="admin-management-actions">
                     <Input
-                        placeholder="Search categories..."
+                        placeholder="Search tags..."
                         prefix={<SearchOutlined />}
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
@@ -166,20 +186,20 @@ const ListOfCategory = () => {
                         onClick={handleCreate}
                         size="large"
                     >
-                        Create Category
+                        Create Tag
                     </Button>
                 </div>
             </div>
 
             <Table
                 columns={columns}
-                dataSource={filteredCategories}
+                dataSource={filteredTags}
                 loading={loading}
                 rowKey="_id"
                 pagination={{
                     pageSize: 6,
                     showSizeChanger: true,
-                    showTotal: (total) => `Total ${total} categories`,
+                    showTotal: (total) => `Total ${total} tags`,
                     style: { color: "#ffffff" }
                 }}
                 className="admin-management-table"
@@ -188,7 +208,7 @@ const ListOfCategory = () => {
                         <Empty
                             description={
                                 <span style={{ color: "black" }}>
-                                    No Category Available
+                                    No Tag Available
                                 </span>
                             }
                         />
@@ -196,9 +216,9 @@ const ListOfCategory = () => {
                 }}
             />
 
-            <CategoryModal
+            <TagModal
                 open={isModalOpen}
-                category={editingCategory}
+                tag={editingTag}
                 onSuccess={handleModalSuccess}
                 onCancel={handleModalCancel}
             />
@@ -206,4 +226,4 @@ const ListOfCategory = () => {
     );
 };
 
-export default ListOfCategory;
+export default ListOfTag;

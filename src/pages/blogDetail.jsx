@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Button, Space, Spin, Avatar, Tag } from "antd";
-import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, UserOutlined, CalendarOutlined, FolderOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, UserOutlined, CalendarOutlined, FolderOutlined, TagOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { getBlogByIdApi, likeBlogApi } from "../utils/Api/blogApi";
 import { AuthContext } from "../context/auth.context";
-import CommentSection from "../components/CommentSection";
-import AnotherBlogs from "../components/AnotherBlogs";
+import CommentSection from "../components/commentSection";
+import AnotherBlogs from "../components/anotherBlogs";
 import "../styles/blogDetail.css";
 
 const BlogDetail = () => {
@@ -102,24 +102,49 @@ const BlogDetail = () => {
                         </div>
 
                         <div className="blog-detail-author-section">
-                            <Space size="middle">
-                                <Avatar
-                                    size={50}
-                                    icon={<UserOutlined />}
-                                    src={blog.author?.avatar}
-                                />
-                                <div>
-                                    <div className="author-name">
-                                        {blog.author?.fullName || blog.author?.username || "Unknown"}
+                            <Space size="middle" wrap>
+                                <Space>
+                                    <Avatar
+                                        size={50}
+                                        icon={<UserOutlined />}
+                                        src={blog.author?.avatar}
+                                    />
+                                    <div>
+                                        <div className="author-name">
+                                            {blog.author?.fullName || blog.author?.username || "Unknown"}
+                                        </div>
+                                        {blog.category && (
+                                            <Tag color="green" className="category-tag">
+                                                <FolderOutlined /> {blog.category.name}
+                                            </Tag>
+                                        )}
                                     </div>
-                                    {blog.category && (
-                                        <Tag color="green" className="category-tag">
-                                            <FolderOutlined /> {blog.category.name}
-                                        </Tag>
-                                    )}
-                                </div>
+                                </Space>
                             </Space>
                         </div>
+
+                        {/* Blog Tags */}
+                        {blog.tags && blog.tags.length > 0 && (
+                            <div className="blog-detail-tags">
+                                <Space size={[8, 8]} wrap>
+                                    <TagOutlined style={{ fontSize: '16px', color: '#64b5f6' }} />
+                                    {blog.tags.map((tag) => (
+                                        <Tag
+                                            key={tag._id}
+                                            color={tag.color}
+                                            style={{
+                                                fontSize: '13px',
+                                                padding: '4px 10px',
+                                                cursor: 'pointer'
+                                            }}
+                                            onClick={() => navigate(`/blog?tag=${tag._id}`)}
+                                        >
+                                            {tag.name}
+                                        </Tag>
+                                    ))}
+                                </Space>
+                            </div>
+                        )}
                     </div>
 
                     {/* Blog Image */}

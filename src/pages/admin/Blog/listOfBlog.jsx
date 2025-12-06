@@ -5,7 +5,7 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined, EyeOutlined
 import { toast } from "react-toastify";
 import { getAllBlogsApi, deleteBlogApi } from "../../../utils/Api/blogApi";
 import BlogModal from "./blogModal";
-import "../../../styles/blogManagement.css";
+import "../../../styles/adminManagement.css";
 
 const ListOfBlog = () => {
     const navigate = useNavigate();
@@ -125,7 +125,7 @@ const ListOfBlog = () => {
             title: "Title",
             dataIndex: "title",
             key: "title",
-            width: 250,
+            width: 200,
             sorter: (a, b) => a.title.localeCompare(b.title),
             render: (text) => <span style={{ fontWeight: 600, color: "#64b5f6" }}>{text}</span>,
         },
@@ -133,6 +133,7 @@ const ListOfBlog = () => {
             title: "Description",
             dataIndex: "description",
             key: "description",
+            width: 250,
             render: (text) => (
                 <div style={{
                     whiteSpace: "normal",
@@ -147,20 +148,41 @@ const ListOfBlog = () => {
             title: "Category",
             dataIndex: ["category", "name"],
             key: "category",
-            width: 150,
+            width: 120,
             render: (text) => <Tag color="green">{text || "N/A"}</Tag>,
+        },
+        {
+            title: "Tags",
+            dataIndex: "tags",
+            key: "tags",
+            width: 200,
+            render: (tags) => (
+                <Space size={[0, 4]} wrap>
+                    {tags && tags.length > 0 ? (
+                        tags.map((tag) => (
+                            <Tag key={tag._id} color={tag.color} style={{ margin: '2px' }}>
+                                {tag.name}
+                            </Tag>
+                        ))
+                    ) : (
+                        <span style={{ color: 'rgba(255, 255, 255, 0.5)', fontStyle: 'italic' }}>
+                            No tags
+                        </span>
+                    )}
+                </Space>
+            ),
         },
         {
             title: "Author",
             dataIndex: ["author", "fullName"],
             key: "author",
-            width: 150,
+            width: 120,
             render: (text) => <span>{text || "Unknown"}</span>,
         },
         {
             title: "Stats",
             key: "stats",
-            width: 120,
+            width: 100,
             align: "center",
             render: (_, record) => (
                 <Space direction="vertical" size={0}>
@@ -186,7 +208,7 @@ const ListOfBlog = () => {
         {
             title: "",
             key: "actions",
-            width: 180,
+            width: 150,
             align: "center",
             fixed: "right",
             render: (_, record) => (
@@ -217,10 +239,10 @@ const ListOfBlog = () => {
     ];
 
     return (
-        <div className="blog-container">
-            <div className="blog-header">
+        <div className="admin-management-container">
+            <div className="admin-management-header">
                 <h2>Blog Management</h2>
-                <div className="blog-actions">
+                <div className="admin-management-actions">
                     <Input
                         placeholder="Search blogs..."
                         prefix={<SearchOutlined />}
@@ -251,8 +273,8 @@ const ListOfBlog = () => {
                     style: { color: "white" },
                     showTotal: (total) => `Total ${total} blogs`,
                 }}
-                scroll={{ x: 1400 }}
-                className="blog-table"
+                scroll={{ x: 1600 }}
+                className="admin-management-table"
                 locale={{
                     emptyText: (
                         <Empty
@@ -266,7 +288,6 @@ const ListOfBlog = () => {
                 }}
                 onRow={(record) => ({
                     onClick: (e) => {
-                        // Không navigate nếu click vào button Edit/Delete
                         if (
                             e.target.closest('.ant-btn') ||
                             e.target.closest('.ant-popover') ||

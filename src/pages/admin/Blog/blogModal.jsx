@@ -4,12 +4,14 @@ import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { createBlogApi, updateBlogApi } from "../../../utils/Api/blogApi";
 import { getAllCategoriesApi } from "../../../utils/Api/categoryApi";
+import { getAllTagsApi } from "../../../utils/Api/tagApi";
 import { uploadImageApi } from "../../../utils/Api/uploadImageApi";
 
 const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
     const [imagePublicId, setImagePublicId] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -17,6 +19,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
     useEffect(() => {
         if (open) {
             fetchCategories();
+            fetchTags();
             if (blog) {
                 // Edit mode
                 form.setFieldsValue({
@@ -24,6 +27,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                     description: blog.description,
                     content: blog.content,
                     categoryId: blog.category?._id || blog.categoryId,
+                    tags: blog.tags?.map(tag => tag._id) || [],
                 });
                 setImageUrl(blog.image || "");
                 setImagePublicId(blog.imagePublicId || "");
@@ -47,11 +51,21 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
         }
     };
 
+    const fetchTags = async () => {
+        try {
+            const res = await getAllTagsApi();
+            if (res && res.EC === 0) {
+                setTags(res.data || []);
+            }
+        } catch (error) {
+            console.error("Fetch tags error:", error);
+        }
+    };
+
     const handleUpload = async ({ file, onSuccess: onUploadSuccess, onError }) => {
         setUploading(true);
         try {
             const res = await uploadImageApi(file);
-            console.log("Upload image response:", res);
             if (res && res.EC === 0) {
                 setImageUrl(res.data.url);
                 setImagePublicId(res.data.publicId);
@@ -93,14 +107,13 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                 image: imageUrl,
                 imagePublicId: imagePublicId,
                 categoryId: values.categoryId,
+                tags: values.tags || [],
             };
 
             let res;
             if (blog) {
-                // Update blog
                 res = await updateBlogApi(blog._id, blogData);
             } else {
-                // Create blog
                 res = await createBlogApi(blogData);
             }
 
@@ -115,7 +128,6 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
             }
         } catch (error) {
             if (error.errorFields) {
-                // Validation error
                 return;
             }
             console.error("Submit blog error:", error);
@@ -143,7 +155,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
             width={800}
             confirmLoading={loading}
             destroyOnClose
-            className="blog-modal"
+            className="admin-management-modal"
         >
             <Form
                 form={form}
@@ -216,6 +228,58 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                             value: cat._id,
                             label: cat.name,
                         }))}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label="Tags"
+                    name="tags"
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="Select tags (optional)"
+                        size="large"
+                        loading={tags.length === 0}
+                        showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={tags.map(tag => ({
+                            value: tag._id,
+                            label: tag.name,
+                        }))}
+                        tagRender={(props) => {
+                            const { label, value, closable, onClose } = props;
+                            const tag = tags.find(t => t._id === value);
+                            return (
+                                <span
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        backgroundColor: tag?.color || '#3b82f6',
+                                        color: '#fff',
+                                        padding: '2px 8px',
+                                        borderRadius: '4px',
+                                        margin: '2px',
+                                        fontSize: '13px'
+                                    }}
+                                >
+                                    {label}
+                                    {closable && (
+                                        <span
+                                            onClick={onClose}
+                                            style={{
+                                                marginLeft: '6px',
+                                                cursor: 'pointer',
+                                                fontSize: '12px'
+                                            }}
+                                        >
+                                            ×
+                                        </span>
+                                    )}
+                                </span>
+                            );
+                        }}
                     />
                 </Form.Item>
 

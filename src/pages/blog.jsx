@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Input, Select, Row, Col, Card, Avatar, Tag, Empty, Pagination } from "antd";
+import { Input, Select, Row, Col, Card, Avatar, Tag, Empty, Pagination, Space } from "antd";
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { getAllBlogsApi } from "../utils/Api/blogApi";
 import { getAllCategoriesApi } from "../utils/Api/categoryApi";
+import { getAllTagsApi } from "../utils/Api/tagApi";
 import { toast } from "react-toastify";
 import "../styles/blog.css";
 
@@ -13,15 +14,18 @@ const Blog = () => {
     const navigate = useNavigate();
     const [blogs, setBlogs] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
+    const [selectedTags, setSelectedTags] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(8);
 
     useEffect(() => {
         fetchBlogs();
         fetchCategories();
+        fetchTags();
     }, []);
 
     const fetchBlogs = async () => {
@@ -55,10 +59,31 @@ const Blog = () => {
         }
     };
 
+    const fetchTags = async () => {
+        try {
+            const res = await getAllTagsApi();
+            if (res && res.EC === 0) {
+                setTags(res.data || []);
+            } else {
+                toast.error(res.message || "Failed to fetch tags");
+            }
+        } catch (error) {
+            console.error("Fetch tags error:", error);
+            toast.error("Failed to fetch tags");
+        }
+    };
+
     const filteredBlogs = blogs.filter((blog) => {
         const matchSearch = blog.title?.toLowerCase().includes(searchText.toLowerCase());
         const matchCategory = selectedCategory === "all" || blog.category?._id === selectedCategory;
-        return matchSearch && matchCategory;
+
+        // Filter by tags - blog must have at least one of the selected tags
+        const matchTags = selectedTags.length === 0 ||
+            selectedTags.some(selectedTagId =>
+                blog.tags?.some(blogTag => blogTag._id === selectedTagId)
+            );
+
+        return matchSearch && matchCategory && matchTags;
     });
 
     const paginatedBlogs = filteredBlogs.slice(
@@ -105,6 +130,57 @@ const Blog = () => {
                             </Select.Option>
                         ))}
                     </Select>
+
+                    <Select
+                        mode="multiple"
+                        value={selectedTags}
+                        onChange={(value) => {
+                            setSelectedTags(value);
+                            setCurrentPage(1);
+                        }}
+                        className="blog-tag-select"
+                        placeholder="Filter by tags"
+                        allowClear
+                        maxTagCount="responsive"
+                        tagRender={(props) => {
+                            const { label, value, closable, onClose } = props;
+                            const tag = tags.find(t => t._id === value);
+                            return (
+                                <span
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        backgroundColor: tag?.color || '#3b82f6',
+                                        color: '#fff',
+                                        padding: '2px 8px',
+                                        borderRadius: '4px',
+                                        margin: '2px',
+                                        fontSize: '12px'
+                                    }}
+                                >
+                                    {label}
+                                    {closable && (
+                                        <span
+                                            onClick={onClose}
+                                            style={{
+                                                marginLeft: '6px',
+                                                cursor: 'pointer',
+                                                fontSize: '14px'
+                                            }}
+                                        >
+                                            ×
+                                        </span>
+                                    )}
+                                </span>
+                            );
+                        }}
+                    >
+                        {tags.map((tag) => (
+                            <Select.Option key={tag._id} value={tag._id}>
+                                {tag.name}
+                            </Select.Option>
+                        ))}
+                    </Select>
                 </div>
             </div>
 
@@ -147,11 +223,32 @@ const Blog = () => {
                                             })}
                                         </div>
 
-                                        {blog.category && (
-                                            <Tag className="blog-card-category">
-                                                {blog.category.name}
-                                            </Tag>
-                                        )}
+                                        <div className="blog-card-footer">
+                                            {blog.category && (
+                                                <Tag className="blog-card-category">
+                                                    {blog.category.name}
+                                                </Tag>
+                                            )}
+
+                                            {blog.tags && blog.tags.length > 0 && (
+                                                <Space size={[0, 4]} wrap className="blog-card-tags">
+                                                    {blog.tags.slice(0, 3).map((tag) => (
+                                                        <Tag
+                                                            key={tag._id}
+                                                            color={tag.color}
+                                                            style={{ fontSize: '11px', padding: '2px 6px' }}
+                                                        >
+                                                            {tag.name}
+                                                        </Tag>
+                                                    ))}
+                                                    {blog.tags.length > 3 && (
+                                                        <Tag style={{ fontSize: '11px', padding: '2px 6px' }}>
+                                                            +{blog.tags.length - 3}
+                                                        </Tag>
+                                                    )}
+                                                </Space>
+                                            )}
+                                        </div>
                                     </div>
                                 </Card>
                             </Col>
