@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Button, Tag, Space, Spin, Avatar } from "antd";
+import { Card, Button, Tag, Space, Avatar } from "antd";
 import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, UserOutlined, CalendarOutlined, FolderOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { getBlogByIdApi, likeBlogApi } from "../../../utils/Api/blogApi";
+import Spinner from "../../../components/spinner";
 import "../../../styles/blogDetailManagement.css";
 
 const BlogDetailManagement = () => {
@@ -55,11 +56,7 @@ const BlogDetailManagement = () => {
     };
 
     if (loading) {
-        return (
-            <div className="blog-detail-loading">
-                <Spin size="large" />
-            </div>
-        );
+        return <Spinner />;
     }
 
     if (!blog) {
@@ -80,14 +77,12 @@ const BlogDetailManagement = () => {
                 </Button>
 
                 <Card className="blog-detail-card">
-                    {/* Blog Image */}
                     {blog.image && (
                         <div className="blog-detail-image">
                             <img src={blog.image} alt={blog.title} />
                         </div>
                     )}
 
-                    {/* Blog Header */}
                     <div className="blog-detail-header">
                         <h1 className="blog-detail-title">{blog.title}</h1>
 
@@ -154,12 +149,10 @@ const BlogDetailManagement = () => {
                         </div>
                     </div>
 
-                    {/* Blog Description */}
                     <div className="blog-detail-description">
                         <p>{blog.description}</p>
                     </div>
 
-                    {/* Blog Content */}
                     <div className="blog-detail-content">
                         {blog.content.split('\n').map((paragraph, index) => (
                             paragraph.trim() && <p key={index}>{paragraph}</p>

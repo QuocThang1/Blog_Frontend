@@ -5,6 +5,13 @@ body {
   min-height: 100vh;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
 /* ==================== POPCONFIRM STYLES ==================== */
 .ant-popconfirm .ant-popover-inner {
   background: rgba(26, 41, 64, 0.98);

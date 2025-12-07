@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getAccountApi } from "../utils/Api/accountApi";
-import { Spin } from "antd";
+import Spinner from "../components/spinner";
 import { AuthContext } from "./auth.context";
 
 export const AuthWrapper = (props) => {
@@ -84,15 +84,8 @@ export const AuthWrapper = (props) => {
     return (
         <>
             {appLoading ? (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                    }}
-                >
-                    <Spin size="large" />
+                <div className="loading">
+                    <Spinner />
                 </div>
             ) : (
                 <AuthContext.Provider value={{ auth, setAuth, appLoading, setAppLoading }}>
