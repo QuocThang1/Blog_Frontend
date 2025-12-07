@@ -6,6 +6,8 @@ import { getAllBlogsApi } from "../utils/Api/blogApi";
 import { getAllCategoriesApi } from "../utils/Api/categoryApi";
 import { getAllTagsApi } from "../utils/Api/tagApi";
 import { toast } from "react-toastify";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import Top5Blogs from "../components/top5Blogs";
 import "../styles/blog.css";
 
@@ -77,13 +79,10 @@ const Blog = () => {
     const filteredBlogs = blogs.filter((blog) => {
         const matchSearch = blog.title?.toLowerCase().includes(searchText.toLowerCase());
         const matchCategory = selectedCategory === "all" || blog.category?._id === selectedCategory;
-
-        // Filter by tags - blog must have at least one of the selected tags
         const matchTags = selectedTags.length === 0 ||
             selectedTags.some(selectedTagId =>
                 blog.tags?.some(blogTag => blogTag._id === selectedTagId)
             );
-
         return matchSearch && matchCategory && matchTags;
     });
 
@@ -100,6 +99,7 @@ const Blog = () => {
     return (
         <div className="blog-page">
             <Top5Blogs />
+
             <div className="blog-header">
                 <h1 className="blog-title">BLOGS</h1>
 
@@ -187,7 +187,23 @@ const Blog = () => {
             </div>
 
             {loading ? (
-                <div className="blog-loading">Loading...</div>
+                <Row gutter={[24, 24]} className="blog-list">
+                    {Array.from({ length: pageSize }).map((_, index) => (
+                        <Col xs={24} sm={12} lg={6} key={index}>
+                            <Card className="blog-card">
+                                <Skeleton height={200} />
+                                <div style={{ padding: 16 }}>
+                                    <Skeleton count={2} style={{ marginBottom: 8 }} />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 }}>
+                                        <Skeleton circle width={24} height={24} />
+                                        <Skeleton width={100} />
+                                    </div>
+                                    <Skeleton width={150} style={{ marginTop: 8 }} />
+                                </div>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
             ) : filteredBlogs.length === 0 ? (
                 <Empty description="No Blog Available" />
             ) : (

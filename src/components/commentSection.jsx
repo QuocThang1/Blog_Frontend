@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext, useRef } from "react";
-import { Card, Input, Button, Avatar, Empty, Spin } from "antd";
+import { Card, Input, Button, Avatar, Empty } from "antd";
 import { UserOutlined, SendOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
+import Skeleton from 'react-loading-skeleton';
 import { createCommentApi, getCommentsByBlogApi } from "../utils/Api/commentApi";
 import { AuthContext } from "../context/auth.context";
 import io from "socket.io-client";
@@ -12,7 +13,7 @@ const { TextArea } = Input;
 const CommentSection = ({ blogId }) => {
     const { auth } = useContext(AuthContext);
     const [comments, setComments] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [commentText, setCommentText] = useState("");
     const socketRef = useRef(null);
@@ -20,7 +21,6 @@ const CommentSection = ({ blogId }) => {
     useEffect(() => {
         fetchComments();
 
-        // Initialize Socket.IO connection
         const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
         socketRef.current = io(SOCKET_URL, {
             transports: ['websocket', 'polling'],
@@ -30,23 +30,18 @@ const CommentSection = ({ blogId }) => {
             reconnectionAttempts: 5
         });
 
-        // Join the blog's comment room
         socketRef.current.emit('joinBlog', blogId);
 
-        // Listen for new comments
         socketRef.current.on('newComment', (data) => {
             if (data.blogId === blogId) {
-                // Add new comment to the list
                 setComments(prevComments => [data.comment, ...prevComments]);
             }
         });
 
-        // Handle connection errors
         socketRef.current.on('connect_error', (error) => {
             console.error('Socket connection error:', error);
         });
 
-        // Cleanup on unmount
         return () => {
             if (socketRef.current) {
                 socketRef.current.emit('leaveBlog', blogId);
@@ -87,7 +82,6 @@ const CommentSection = ({ blogId }) => {
             if (res && res.EC === 0) {
                 toast.success("Comment posted successfully");
                 setCommentText("");
-                // No need to call fetchComments() - Socket.IO will update it automatically
             } else {
                 toast.error(res.message || "Failed to post comment");
             }
@@ -133,9 +127,16 @@ const CommentSection = ({ blogId }) => {
             {/* Comments List */}
             <div className="comment-list">
                 {loading ? (
-                    <div className="comment-loading">
-                        <Spin />
-                    </div>
+                    // Skeleton for comments
+                    Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="comment-item">
+                            <Skeleton circle width={40} height={40} />
+                            <div className="comment-content" style={{ flex: 1 }}>
+                                <Skeleton width={150} height={20} style={{ marginBottom: 8 }} />
+                                <Skeleton count={2} />
+                            </div>
+                        </div>
+                    ))
                 ) : comments.length === 0 ? (
                     <Empty description="No comments yet" />
                 ) : (
