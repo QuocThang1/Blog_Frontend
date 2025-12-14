@@ -233,3 +233,20 @@
 .blog-table .ant-table-cell {
   background: transparent !important;
 }
+
+/* Thêm vào cuối file */
+.like-button {
+    transition: all 0.3s ease;
+}
+
+.like-button.liked {
+    color: #ff4d4f !important;
+}
+
+.like-button:hover {
+    transform: scale(1.1);
+}
+
+.like-button .anticon {
+    transition: all 0.3s ease;
+}

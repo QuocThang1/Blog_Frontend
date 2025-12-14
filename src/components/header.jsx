@@ -50,7 +50,7 @@ const Header = () => {
                 {/* Logo */}
                 <div className="header-logo" onClick={() => navigate("/")}>
                     <div className="header-logo-icon">
-                        <span>G13</span>
+                        <span>13</span>
                     </div>
                     <span className="header-logo-text">GROUP 13</span>
                 </div>

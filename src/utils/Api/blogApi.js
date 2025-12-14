@@ -68,11 +68,6 @@ const getTop5BlogsApi = () => {
     return axios.get(URL_API);
 }
 
-const likeBlogApi = (blogId) => {
-    const URL_API = `/v1/api/blogs/${blogId}/like`;
-    return axios.post(URL_API);
-};
-
 export {
     getAllBlogsApi,
     getBlogByIdApi,
@@ -83,6 +78,5 @@ export {
     deleteBlogApi,
     incrementBlogViewsApi,
     getTop5BlogsApi,
-    likeBlogApi,
     getBlogsByTagApi
 };
