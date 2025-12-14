@@ -90,7 +90,7 @@ const Top5Blogs = () => {
                                         <EyeOutlined /> {blog.views || 0}
                                     </span>
                                     <span className="top5-stat">
-                                        <HeartOutlined /> {blog.likes || 0}
+                                        <HeartOutlined /> {blog.likesCount || 0}
                                     </span>
                                 </div>
 

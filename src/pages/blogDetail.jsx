@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Button, Space, Avatar, Tag } from "antd";
-import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, UserOutlined, FolderOutlined, TagOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, HeartFilled, UserOutlined, FolderOutlined, TagOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { getBlogByIdApi, likeBlogApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
+import { getBlogByIdApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
+import { toggleLikeBlogApi, checkUserLikedApi } from "../utils/Api/likeApi";
 import { AuthContext } from "../context/auth.context";
 import CommentSection from "../components/commentSection";
 import AnotherBlogs from "../components/anotherBlogs";
@@ -18,6 +19,8 @@ const BlogDetail = () => {
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);
     const [liking, setLiking] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
     const viewCountedRef = useRef(new Set());
 
     useEffect(() => {
@@ -30,7 +33,12 @@ const BlogDetail = () => {
             const res = await getBlogByIdApi(id);
             if (res && res.EC === 0) {
                 setBlog(res.data);
+                setLikesCount(res.data.likesCount || 0);
                 await handleIncrementView(id);
+
+                if (auth.isAuthenticated) {
+                    await checkLikeStatus();
+                }
             } else {
                 toast.error(res.message || "Failed to fetch blog");
             }
@@ -39,6 +47,18 @@ const BlogDetail = () => {
             toast.error("Failed to fetch blog");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const checkLikeStatus = async () => {
+        try {
+            const res = await checkUserLikedApi(id);
+            if (res && res.EC === 0) {
+                setIsLiked(res.data.isLiked);
+                setLikesCount(res.data.likesCount);
+            }
+        } catch (error) {
+            console.error("Check like status error:", error);
         }
     };
 
@@ -74,13 +94,11 @@ const BlogDetail = () => {
 
         setLiking(true);
         try {
-            const res = await likeBlogApi(id);
+            const res = await toggleLikeBlogApi(id);
             if (res && res.EC === 0) {
-                toast.success("Liked!");
-                const blogRes = await getBlogByIdApi(id);
-                if (blogRes && blogRes.EC === 0) {
-                    setBlog(blogRes.data);
-                }
+                setIsLiked(res.data.isLiked);
+                setLikesCount(res.data.likesCount);
+                toast.success(res.data.isLiked ? "Liked!" : "Unliked!");
             } else {
                 toast.error(res.message || "Failed to like blog");
             }
@@ -108,7 +126,6 @@ const BlogDetail = () => {
                 {loading ? (
                     // Skeleton Loading
                     <Card className="blog-detail-card">
-                        {/* Blog Header Skeleton */}
                         <div className="blog-detail-header">
                             <Skeleton height={40} width="80%" style={{ marginBottom: 20 }} />
                             <Skeleton width={200} style={{ marginBottom: 20 }} />
@@ -123,7 +140,6 @@ const BlogDetail = () => {
                                 </Space>
                             </div>
 
-                            {/* Tags Skeleton */}
                             <div className="blog-detail-tags" style={{ marginTop: 20 }}>
                                 <Space size={[8, 8]} wrap>
                                     <Skeleton width={60} height={24} count={3} inline style={{ marginRight: 8 }} />
@@ -131,12 +147,10 @@ const BlogDetail = () => {
                             </div>
                         </div>
 
-                        {/* Blog Image Skeleton */}
                         <div className="blog-detail-image">
                             <Skeleton height={400} />
                         </div>
 
-                        {/* Blog Stats Skeleton */}
                         <div className="blog-detail-stats">
                             <Space size="large">
                                 <Skeleton width={100} height={20} />
@@ -144,15 +158,12 @@ const BlogDetail = () => {
                             </Space>
                         </div>
 
-                        {/* Blog Content Skeleton */}
                         <div className="blog-detail-content">
                             <Skeleton count={10} style={{ marginBottom: 10 }} />
                         </div>
                     </Card>
                 ) : !blog ? null : (
-                    // Actual Content
                     <Card className="blog-detail-card">
-                        {/* Blog Header */}
                         <div className="blog-detail-header">
                             <h1 className="blog-detail-title">{blog.title}</h1>
 
@@ -188,7 +199,6 @@ const BlogDetail = () => {
                                 </Space>
                             </div>
 
-                            {/* Blog Tags */}
                             {blog.tags && blog.tags.length > 0 && (
                                 <div className="blog-detail-tags">
                                     <Space size={[8, 8]} wrap>
@@ -212,14 +222,12 @@ const BlogDetail = () => {
                             )}
                         </div>
 
-                        {/* Blog Image */}
                         {blog.image && (
                             <div className="blog-detail-image">
                                 <img src={blog.image} alt={blog.title} />
                             </div>
                         )}
 
-                        {/* Blog Stats */}
                         <div className="blog-detail-stats">
                             <Space size="large">
                                 <span>
@@ -228,18 +236,17 @@ const BlogDetail = () => {
                                 </span>
                                 <Button
                                     type="text"
-                                    icon={<HeartOutlined />}
+                                    icon={isLiked ? <HeartFilled style={{ color: '#ff4d4f' }} /> : <HeartOutlined />}
                                     onClick={handleLike}
                                     loading={liking}
-                                    className="like-button"
+                                    className={`like-button ${isLiked ? 'liked' : ''}`}
                                     disabled={!auth.isAuthenticated}
                                 >
-                                    {blog.likes || 0} likes
+                                    {likesCount} {likesCount === 1 ? 'like' : 'likes'}
                                 </Button>
                             </Space>
                         </div>
 
-                        {/* Blog Content */}
                         <div className="blog-detail-content">
                             {blog.content.split('\n').map((paragraph, index) => (
                                 paragraph.trim() && <p key={index}>{paragraph}</p>

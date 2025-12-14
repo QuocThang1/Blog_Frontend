@@ -63,7 +63,7 @@
   color: #fff;
   text-decoration: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 19px;
   font-weight: 500;
   transition: color 0.3s;
   display: flex;
@@ -78,7 +78,7 @@
   color: #fff;
   border: 1px solid #64b5f6;
   border-radius: 20px;
-  padding: 5px 20px;
+  padding: 10px 22px;
   height: auto;
 }
 

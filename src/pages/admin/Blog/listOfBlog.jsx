@@ -23,6 +23,7 @@ const ListOfBlog = () => {
         setLoading(true);
         try {
             const res = await getAllBlogsApi();
+            console.log("Fetch blogs response:", res);
             if (res && res.EC === 0) {
                 setBlogs(res.data || []);
             } else {
@@ -192,7 +193,7 @@ const ListOfBlog = () => {
                     </span>
                     <span>
                         <HeartOutlined style={{ marginRight: 5, color: "#ff6b6b" }} />
-                        {record.likes || 0}
+                        {record.likesCount || 0}
                     </span>
                 </Space>
             ),
