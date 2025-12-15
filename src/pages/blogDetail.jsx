@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getBlogByIdApi, likeBlogApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
-import { summaryBlogApi } from "../utils/Api/geminiApi";
+import { summaryBlogApi } from "../utils/Api/aiSummarizeApi";
 import { AuthContext } from "../context/auth.context";
 import CommentSection from "../components/commentSection";
 import AnotherBlogs from "../components/anotherBlogs";
