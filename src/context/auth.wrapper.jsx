@@ -7,6 +7,7 @@ export const AuthWrapper = (props) => {
     const [auth, setAuth] = useState({
         isAuthenticated: false,
         user: {
+            _id: "",
             email: "",
             fullName: "",
             username: "",
@@ -34,6 +35,7 @@ export const AuthWrapper = (props) => {
                     setAuth({
                         isAuthenticated: true,
                         user: {
+                            _id: res.data._id || "",
                             email: res.data.email || "",
                             fullName: res.data.fullName || "",
                             username: res.data.username || "",
@@ -48,6 +50,7 @@ export const AuthWrapper = (props) => {
                     setAuth({
                         isAuthenticated: false,
                         user: {
+                            _id: "",
                             email: "",
                             fullName: "",
                             username: "",
@@ -64,6 +67,7 @@ export const AuthWrapper = (props) => {
                 setAuth({
                     isAuthenticated: false,
                     user: {
+                        _id: "",
                         email: "",
                         fullName: "",
                         username: "",
