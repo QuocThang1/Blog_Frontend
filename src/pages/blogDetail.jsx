@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Button, Space, Avatar, Tag } from "antd";
-import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, HeartFilled, UserOutlined, FolderOutlined, TagOutlined } from "@ant-design/icons";
+import { Card, Button, Space, Avatar, Tag, Modal } from "antd";
+import { ArrowLeftOutlined, EyeOutlined, HeartOutlined, HeartFilled, UserOutlined, FolderOutlined, TagOutlined, RobotOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getBlogByIdApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
 import { toggleLikeBlogApi, checkUserLikedApi } from "../utils/Api/likeApi";
+import { summaryBlogApi } from "../utils/Api/aiSummarizeApi";
 import { AuthContext } from "../context/auth.context";
 import CommentSection from "../components/commentSection";
 import AnotherBlogs from "../components/anotherBlogs";
@@ -21,6 +22,9 @@ const BlogDetail = () => {
     const [liking, setLiking] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(0);
+    const [summaryModalVisible, setSummaryModalVisible] = useState(false);
+    const [summary, setSummary] = useState("");
+    const [summarizing, setSummarizing] = useState(false);
     const viewCountedRef = useRef(new Set());
 
     useEffect(() => {
@@ -107,6 +111,39 @@ const BlogDetail = () => {
             toast.error(error?.response?.data?.EM || "Failed to like blog");
         } finally {
             setLiking(false);
+        }
+    };
+
+    // Xử lý tóm tắt bài viết bằng AI
+    const handleSummary = async () => {
+        if (!auth.isAuthenticated) {
+            toast.warning("Vui lòng đăng nhập để sử dụng tính năng này");
+            return;
+        }
+
+        if (!blog || !blog.content) {
+            toast.error("Không có nội dung để tóm tắt");
+            return;
+        }
+
+        setSummarizing(true);
+        setSummaryModalVisible(true);
+        setSummary("");
+
+        try {
+            const res = await summaryBlogApi(blog.content);
+            if (res && res.success) {
+                setSummary(res.data.summary);
+            } else {
+                toast.error(res?.message || "Không thể tóm tắt bài viết");
+                setSummaryModalVisible(false);
+            }
+        } catch (error) {
+            console.error("Summary error:", error);
+            toast.error("Đã xảy ra lỗi khi tóm tắt bài viết");
+            setSummaryModalVisible(false);
+        } finally {
+            setSummarizing(false);
         }
     };
 
@@ -244,6 +281,16 @@ const BlogDetail = () => {
                                 >
                                     {likesCount} {likesCount === 1 ? 'like' : 'likes'}
                                 </Button>
+                                <Button
+                                    type="text"
+                                    icon={<RobotOutlined />}
+                                    onClick={handleSummary}
+                                    loading={summarizing}
+                                    className="ai-summary-button"
+                                    disabled={!auth.isAuthenticated}
+                                >
+                                    AI Summary
+                                </Button>
                             </Space>
                         </div>
 
@@ -258,6 +305,40 @@ const BlogDetail = () => {
                 <CommentSection blogId={id} />
 
                 <AnotherBlogs currentBlogId={id} />
+
+                {/* AI Summary Modal */}
+                <Modal
+                    title={
+                        <Space>
+                            <RobotOutlined style={{ color: '#64b5f6' }} />
+                            <span>AI Summary - Tóm tắt bài viết</span>
+                        </Space>
+                    }
+                    open={summaryModalVisible}
+                    onCancel={() => setSummaryModalVisible(false)}
+                    footer={[
+                        <Button key="close" onClick={() => setSummaryModalVisible(false)}>
+                            Đóng
+                        </Button>
+                    ]}
+                    className="ai-summary-modal"
+                    width={600}
+                >
+                    {summarizing ? (
+                        <div className="ai-summary-loading">
+                            <Skeleton count={3} style={{ marginBottom: 10 }} />
+                            <p style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginTop: 15 }}>
+                                Đang tóm tắt bài viết bằng AI...
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="ai-summary-content">
+                            {summary.split('\n').map((line, index) => (
+                                line.trim() && <p key={index}>{line}</p>
+                            ))}
+                        </div>
+                    )}
+                </Modal>
             </div>
         </div>
     );
