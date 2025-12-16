@@ -2,7 +2,7 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import { Button, Dropdown, Badge } from "antd";
-import { UserOutlined, LogoutOutlined, HomeOutlined, BookOutlined, MessageOutlined } from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, HomeOutlined, BookOutlined, MessageOutlined, BulbOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { getUnreadCountApi } from "../utils/Api/chatApi";
 import io from "socket.io-client";
@@ -153,6 +153,13 @@ const Header = () => {
                     >
                         <BookOutlined style={{ marginRight: 5 }} />
                         Blog
+                    </a>
+                    <a
+                        onClick={() => navigate("/submissions")}
+                        className="header-nav-link"
+                    >
+                        <BulbOutlined style={{ marginRight: 5 }} />
+                        Share Your Idea
                     </a>
                 </nav>
             </div>
