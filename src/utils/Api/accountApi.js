@@ -23,7 +23,7 @@ const getAccountApi = () => {
 const updateProfileApi = (profileData) => {
     const URL_API = "/v1/api/account/profile";
     const data = {
-        usernamme: profileData.username,
+        username: profileData.username,
         fullName: profileData.fullName,
         email: profileData.email,
         phone: profileData.phone,
@@ -33,4 +33,24 @@ const updateProfileApi = (profileData) => {
     return axios.put(URL_API, data);
 };
 
-export { signUpApi, loginApi, getAccountApi, updateProfileApi };
+const googleLoginApi = ({ idToken = null, accessToken = null } = {}) => {
+    const URL_API = "/v1/api/account/google-login";
+    return axios.post(URL_API, { idToken, accessToken });
+};
+
+const requestPasswordResetApi = (email) => {
+    const URL_API = "/v1/api/account/forgot-password";
+    return axios.post(URL_API, { email });
+};
+
+const verifyOtpApi = (email, otp) => {
+    const URL_API = "/v1/api/account/verify-otp";
+    return axios.post(URL_API, { email, otp });
+};
+
+const resetPasswordApi = (resetToken, newPassword) => {
+    const URL_API = "/v1/api/account/reset-password";
+    return axios.post(URL_API, { resetToken, newPassword });
+};
+
+export { signUpApi, loginApi, getAccountApi, updateProfileApi, googleLoginApi, requestPasswordResetApi, verifyOtpApi, resetPasswordApi };

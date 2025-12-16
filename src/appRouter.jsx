@@ -3,7 +3,8 @@ import ProtectedRoute from "./route/ProtectedRoute.jsx";
 import App from "./layout/generalLayout.jsx";
 import HomePage from "./pages/home.jsx";
 import Register from "./pages/Register.jsx";
-import Login from "./pages/Login.jsx";
+import Login from "./pages/login.jsx";
+import ForgotPassword from "./pages/forgotPassword.jsx";
 import UserLayout from "./layout/userLayout.jsx";
 import Profile from "./pages/Profile.jsx";
 import ListOfCategory from "./pages/admin/Category/listOfCategory.jsx";
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
   },
   { path: "/register", element: <Register /> },
   { path: "/login", element: <Login /> },
+  { path: "/forgot-password", element: <ForgotPassword /> },
   {
     path: "/profile",
     element: <UserLayout />,
