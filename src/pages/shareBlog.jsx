@@ -42,7 +42,7 @@ const ShareBlog = () => {
         try {
             const res = await createSubmissionApi(values.link);
             if (res && res.EC === 0) {
-                toast.success("Submission sent successfully!");
+                toast.success(res.EM || "Submission sent successfully!");
                 form.resetFields();
                 await fetchMySubmissions();
             } else {
