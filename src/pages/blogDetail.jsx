@@ -135,12 +135,12 @@ const BlogDetail = () => {
             if (res && res.success) {
                 setSummary(res.data.summary);
             } else {
-                toast.error(res?.message || "Không thể tóm tắt bài viết");
+                toast.error(res?.message || "Failed to summarize blog");
                 setSummaryModalVisible(false);
             }
         } catch (error) {
             console.error("Summary error:", error);
-            toast.error("Đã xảy ra lỗi khi tóm tắt bài viết");
+            toast.error("An error occurred while summarizing the blog");
             setSummaryModalVisible(false);
         } finally {
             setSummarizing(false);
@@ -311,14 +311,14 @@ const BlogDetail = () => {
                     title={
                         <Space>
                             <RobotOutlined style={{ color: '#64b5f6' }} />
-                            <span>AI Summary - Tóm tắt bài viết</span>
+                            <span>AI Summary - Blog Summary</span>
                         </Space>
                     }
                     open={summaryModalVisible}
                     onCancel={() => setSummaryModalVisible(false)}
                     footer={[
                         <Button key="close" onClick={() => setSummaryModalVisible(false)}>
-                            Đóng
+                            Close
                         </Button>
                     ]}
                     className="ai-summary-modal"
@@ -328,7 +328,7 @@ const BlogDetail = () => {
                         <div className="ai-summary-loading">
                             <Skeleton count={3} style={{ marginBottom: 10 }} />
                             <p style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginTop: 15 }}>
-                                Đang tóm tắt bài viết bằng AI...
+                                AI is summarizing the blog...
                             </p>
                         </div>
                     ) : (

@@ -15,12 +15,11 @@ import {
     sendMessageApi,
     getAllUsersApi 
 } from "../utils/Api/chatApi";
-import io from "socket.io-client";
 import "../styles/chatBox.css";
 
 const { TextArea } = Input;
 
-const ChatBox = ({ isOpen, onClose }) => {
+const ChatBox = ({ isOpen, onClose, socketRef }) => {
     const { auth } = useContext(AuthContext);
     const [view, setView] = useState("conversations"); // "conversations" | "chat" | "users"
     const [conversations, setConversations] = useState([]);
@@ -34,71 +33,79 @@ const ChatBox = ({ isOpen, onClose }) => {
     const [isTyping, setIsTyping] = useState(false);
     const [typingUser, setTypingUser] = useState(null);
     
-    const socketRef = useRef(null);
     const messagesEndRef = useRef(null);
     const typingTimeoutRef = useRef(null);
+    const selectedPartnerRef = useRef(null);
 
-    // Initialize socket connection
+    // Keep selectedPartner ref in sync
     useEffect(() => {
-        if (!auth.isAuthenticated || !isOpen) return;
+        selectedPartnerRef.current = selectedPartner;
+    }, [selectedPartner]);
 
-        const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
-        const token = localStorage.getItem("access_token");
-        
-        socketRef.current = io(SOCKET_URL, {
-            transports: ['websocket', 'polling'],
-            auth: { token },
-            reconnection: true,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
-            reconnectionAttempts: 5
-        });
+    // Setup socket listeners for chat (using socket from Header)
+    useEffect(() => {
+        if (!socketRef?.current || !auth.isAuthenticated) return;
 
-        socketRef.current.emit('joinChat');
+        const socket = socketRef.current;
 
-        // Listen for new messages
-        socketRef.current.on('newMessage', (message) => {
+        // Handler for new messages
+        const handleNewMessage = (message) => {
             // Update messages if in current conversation
-            if (selectedPartner && 
-                (message.sender._id === selectedPartner._id || 
-                 message.receiver._id === selectedPartner._id)) {
-                setMessages(prev => [...prev, message]);
+            const partner = selectedPartnerRef.current;
+            if (partner && 
+                (message.sender._id === partner._id || 
+                 message.receiver._id === partner._id)) {
+                setMessages(prev => {
+                    // Avoid duplicates
+                    if (prev.some(m => m._id === message._id)) return prev;
+                    return [...prev, message];
+                });
             }
             // Refresh conversations list
             fetchConversations();
-        });
+        };
 
-        // Listen for sent message confirmation
-        socketRef.current.on('messageSent', (message) => {
-            setMessages(prev => [...prev, message]);
-        });
+        // Handler for sent message confirmation
+        const handleMessageSent = (message) => {
+            setMessages(prev => {
+                // Avoid duplicates
+                if (prev.some(m => m._id === message._id)) return prev;
+                return [...prev, message];
+            });
+        };
 
-        // Typing indicators
-        socketRef.current.on('userTyping', (data) => {
-            if (selectedPartner && data.userId === selectedPartner._id) {
+        // Handler for typing indicator
+        const handleUserTyping = (data) => {
+            const partner = selectedPartnerRef.current;
+            if (partner && data.userId === partner._id) {
                 setTypingUser(data);
                 setIsTyping(true);
             }
-        });
+        };
 
-        socketRef.current.on('userStopTyping', (data) => {
-            if (selectedPartner && data.userId === selectedPartner._id) {
+        // Handler for stop typing
+        const handleUserStopTyping = (data) => {
+            const partner = selectedPartnerRef.current;
+            if (partner && data.userId === partner._id) {
                 setIsTyping(false);
                 setTypingUser(null);
             }
-        });
-
-        socketRef.current.on('connect_error', (error) => {
-            console.error('Chat socket connection error:', error);
-        });
-
-        return () => {
-            if (socketRef.current) {
-                socketRef.current.emit('leaveChat');
-                socketRef.current.disconnect();
-            }
         };
-    }, [auth.isAuthenticated, isOpen]);
+
+        // Register listeners
+        socket.on('newMessage', handleNewMessage);
+        socket.on('messageSent', handleMessageSent);
+        socket.on('userTyping', handleUserTyping);
+        socket.on('userStopTyping', handleUserStopTyping);
+
+        // Cleanup listeners on unmount
+        return () => {
+            socket.off('newMessage', handleNewMessage);
+            socket.off('messageSent', handleMessageSent);
+            socket.off('userTyping', handleUserTyping);
+            socket.off('userStopTyping', handleUserStopTyping);
+        };
+    }, [socketRef?.current, auth.isAuthenticated]);
 
     // Fetch conversations on open
     useEffect(() => {
@@ -109,11 +116,17 @@ const ChatBox = ({ isOpen, onClose }) => {
 
     // Scroll to bottom when messages change
     useEffect(() => {
-        scrollToBottom();
+        // Use setTimeout to ensure DOM has updated
+        const timer = setTimeout(() => {
+            scrollToBottom();
+        }, 100);
+        return () => clearTimeout(timer);
     }, [messages]);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
     };
 
     const fetchConversations = async () => {
@@ -150,6 +163,8 @@ const ChatBox = ({ isOpen, onClose }) => {
             const res = await getMessagesApi(partnerId);
             if (res && res.success) {
                 setMessages(res.data.messages || []);
+                // Scroll to bottom after messages loaded
+                setTimeout(() => scrollToBottom(), 150);
             }
         } catch (error) {
             console.error("Fetch messages error:", error);
@@ -232,12 +247,13 @@ const ChatBox = ({ isOpen, onClose }) => {
 
     const formatTime = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleTimeString('vi-VN', { 
+        return date.toLocaleTimeString('en-US', { 
             hour: '2-digit', 
             minute: '2-digit' 
         });
     };
 
+    // Format for conversation list (shows date only for older messages)
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const today = new Date();
@@ -247,12 +263,37 @@ const ChatBox = ({ isOpen, onClose }) => {
         if (date.toDateString() === today.toDateString()) {
             return formatTime(dateString);
         } else if (date.toDateString() === yesterday.toDateString()) {
-            return "Hôm qua";
+            return "Yesterday";
         } else {
-            return date.toLocaleDateString('vi-VN', { 
+            return date.toLocaleDateString('en-US', { 
                 day: '2-digit', 
                 month: '2-digit' 
             });
+        }
+    };
+
+    // Format for message bubbles (shows date + time for older messages)
+    const formatMessageTime = (dateString) => {
+        const date = new Date(dateString);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const time = date.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+
+        if (date.toDateString() === today.toDateString()) {
+            return time;
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return `Yesterday, ${time}`;
+        } else {
+            const dateStr = date.toLocaleDateString('en-US', { 
+                day: '2-digit', 
+                month: '2-digit' 
+            });
+            return `${dateStr}, ${time}`;
         }
     };
 
@@ -272,8 +313,8 @@ const ChatBox = ({ isOpen, onClose }) => {
                         />
                     )}
                     <h3 className="chatbox-title">
-                        {view === "conversations" && "Tin nhắn"}
-                        {view === "users" && "Người dùng"}
+                        {view === "conversations" && "Messages"}
+                        {view === "users" && "Users"}
                         {view === "chat" && (selectedPartner?.fullName || selectedPartner?.username)}
                     </h3>
                     <Button 
@@ -301,12 +342,12 @@ const ChatBox = ({ isOpen, onClose }) => {
                                         onClick={handleNewChat}
                                         className="chatbox-new-chat-btn"
                                     >
-                                        + Cuộc trò chuyện mới
+                                        + New Conversation
                                     </Button>
                                     
                                     {conversations.length === 0 ? (
                                         <Empty 
-                                            description="Chưa có cuộc trò chuyện nào"
+                                            description="No conversations yet"
                                             className="chatbox-empty"
                                         />
                                     ) : (
@@ -353,7 +394,7 @@ const ChatBox = ({ isOpen, onClose }) => {
                             {view === "users" && (
                                 <div className="chatbox-users">
                                     <Input
-                                        placeholder="Tìm kiếm người dùng..."
+                                        placeholder="Search users..."
                                         prefix={<SearchOutlined />}
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -364,12 +405,12 @@ const ChatBox = ({ isOpen, onClose }) => {
                                         onClick={handleBackToConversations}
                                         className="chatbox-back-link"
                                     >
-                                        ← Quay lại tin nhắn
+                                        ← Back to messages
                                     </Button>
                                     
                                     {filteredUsers.length === 0 ? (
                                         <Empty 
-                                            description="Không tìm thấy người dùng"
+                                            description="No users found"
                                             className="chatbox-empty"
                                         />
                                     ) : (
@@ -406,7 +447,7 @@ const ChatBox = ({ isOpen, onClose }) => {
                                     <div className="chatbox-messages">
                                         {messages.length === 0 ? (
                                             <div className="chatbox-no-messages">
-                                                <p>Bắt đầu cuộc trò chuyện</p>
+                                                <p>Start a conversation</p>
                                             </div>
                                         ) : (
                                             messages.map((msg, index) => (
@@ -422,14 +463,14 @@ const ChatBox = ({ isOpen, onClose }) => {
                                                         {msg.content}
                                                     </div>
                                                     <div className="chatbox-message-time">
-                                                        {formatTime(msg.createdAt)}
+                                                        {formatMessageTime(msg.createdAt)}
                                                     </div>
                                                 </div>
                                             ))
                                         )}
                                         {isTyping && (
                                             <div className="chatbox-typing-indicator">
-                                                {typingUser?.fullName || typingUser?.username} đang gõ...
+                                                {typingUser?.fullName || typingUser?.username} is typing...
                                             </div>
                                         )}
                                         <div ref={messagesEndRef} />
@@ -443,7 +484,7 @@ const ChatBox = ({ isOpen, onClose }) => {
                                                 handleTyping();
                                             }}
                                             onKeyPress={handleKeyPress}
-                                            placeholder="Nhập tin nhắn..."
+                                            placeholder="Type a message..."
                                             autoSize={{ minRows: 1, maxRows: 3 }}
                                             className="chatbox-input"
                                         />

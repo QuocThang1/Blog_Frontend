@@ -190,8 +190,12 @@ const Header = () => {
                 )}
             </nav>
 
-            {/* ChatBox Component */}
-            <ChatBox isOpen={isChatOpen} onClose={handleCloseChat} />
+            {/* ChatBox Component - pass socket reference */}
+            <ChatBox 
+                isOpen={isChatOpen} 
+                onClose={handleCloseChat} 
+                socketRef={socketRef}
+            />
         </header>
     );
 };
