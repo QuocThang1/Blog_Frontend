@@ -96,3 +96,39 @@
   color: #64b5f6;
   border-color: #64b5f6;
 }
+
+.header-chat-button {
+  color: #fff;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.header-chat-button:hover {
+  color: #64b5f6;
+}
+
+/* Chat Badge Styling */
+.header-nav .ant-badge .ant-badge-count {
+  background: #ff4d4f;
+  box-shadow: 0 0 0 2px #0a1628;
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 9px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

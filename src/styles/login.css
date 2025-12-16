@@ -41,6 +41,7 @@
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   z-index: 1;
+  color: #fff"
 }
 
 .login-card .ant-card-head {
@@ -133,6 +134,62 @@
   background: linear-gradient(90deg, #409cff 0%, #64b5f6 100%);
   box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
   transform: translateY(-2px);
+}
+
+.ant-btn.login-gooogle-button {
+  background: linear-gradient(90deg, #FF937E 0%, #DC0000 100%);
+  border: none;
+  border-radius: 25px;
+  height: 45px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(246, 100, 100, 0.3);
+
+  transition: all 0.3s ease;
+}
+
+/* hover / focus */
+.ant-btn.login-gooogle-button:hover {
+  background: linear-gradient(90deg, #FF937E 0%, #DC0000 100%);
+  box-shadow: 0 6px 20px rgba(64, 156, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* New: styling for the custom Google button using shared button classes */
+.login-submit-button.google-login-btn {
+  background: #db4437; /* Google red */
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  font-weight: 600;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(219, 68, 55, 0.3);
+  transition: all 0.3s;
+}
+
+.login-submit-button.google-login-btn:hover {
+  background: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(219, 68, 55, 0.45);
+  color: #db4437 !important;
+}
+
+/* Force text and icon color (including svg path) on hover to Google red */
+.login-submit-button.google-login-btn:hover,
+.login-submit-button.google-login-btn:hover span,
+.login-submit-button.google-login-btn:hover svg,
+.login-submit-button.google-login-btn:hover svg path,
+.login-submit-button.google-login-btn:hover .ant-btn-icon {
+  color: #db4437 !important;
+  fill: #db4437 !important;
 }
 
 .login-register-link {
