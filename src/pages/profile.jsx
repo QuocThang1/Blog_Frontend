@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { Card, Form, Input, Button, DatePicker, Select, Avatar } from "antd";
+import { Card, Form, Input, Button, DatePicker, Select, Avatar, Tag } from "antd";
 import { UserOutlined, MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { updateProfileApi, getAccountApi } from "../utils/Api/accountApi";
+import { getAllCategoriesApi } from "../utils/Api/categoryApi";
 import { AuthContext } from "../context/auth.context";
 import dayjs from "dayjs";
 import "../styles/profile.css";
@@ -10,11 +11,29 @@ import "../styles/profile.css";
 const Profile = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [categoryOptions, setCategoryOptions] = useState([]);
     const { auth, setAuth } = useContext(AuthContext);
 
     useEffect(() => {
         fetchUserData();
+        fetchCategories();
     }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const res = await getAllCategoriesApi();
+            if (res?.data) {
+                const options = res.data.map(cat => ({
+                    label: cat.name,
+                    value: cat._id
+                }));
+                setCategoryOptions(options);
+            }
+        } catch (error) {
+            console.error("Fetch categories error:", error);
+            toast.error("Failed to load categories");
+        }
+    };
 
     const fetchUserData = async () => {
         try {
@@ -28,6 +47,7 @@ const Profile = () => {
                     phone: userData.phone,
                     dob: userData.dob ? dayjs(userData.dob) : null,
                     gender: userData.gender,
+                    categories: userData.categories || [], // <-- thêm categories
                 });
             }
         } catch (error) {
@@ -46,6 +66,7 @@ const Profile = () => {
                 phone: values.phone,
                 dob: values.dob ? values.dob.format("YYYY-MM-DD") : "",
                 gender: values.gender,
+                categories: values.categories || [], // <-- gửi mảng category _id
             };
 
             const res = await updateProfileApi(profileData);
@@ -63,6 +84,7 @@ const Profile = () => {
                         phone: profileData.phone,
                         dob: profileData.dob,
                         gender: profileData.gender,
+                        categories: profileData.categories,
                     },
                 });
             } else {
@@ -91,10 +113,7 @@ const Profile = () => {
                     onFinish={onFinish}
                     className="profile-form"
                 >
-                    <Form.Item
-                        label="Username"
-                        name="username"
-                    >
+                    <Form.Item label="Username" name="username">
                         <Input
                             prefix={<UserOutlined style={{ color: '#64b5f6' }} />}
                             size="large"
@@ -179,6 +198,27 @@ const Profile = () => {
                         </Select>
                     </Form.Item>
 
+                    {/* NEW: Multi-Select Categories */}
+                    <Form.Item label="Preferred Categories" name="categories">
+                    <Select
+                        mode="multiple"
+                        placeholder="Select categories"
+                        size="large"
+                        className="profile-input"
+                        options={categoryOptions}
+                        allowClear
+                        tagRender={({ label, value, closable, onClose }) => (
+                        <Tag
+                            color="#409cff"   // màu xanh dương
+                            closable={closable}
+                            onClose={onClose}
+                            style={{ marginRight: 3 }}
+                        >
+                            {label}
+                        </Tag>
+                        )}
+                    />
+                    </Form.Item>
                     <Form.Item>
                         <Button
                             type="primary"

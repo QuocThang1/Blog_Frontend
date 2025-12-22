@@ -48,6 +48,30 @@ const UserSidebar = () => {
             onClick: () => navigate("/profile"),
         },
         ...(auth.user.role === "admin"
+            ? [{
+                key: "/profile/categories",
+                icon: <AppstoreOutlined />,
+                label: "Category",
+                onClick: () => navigate("/profile/categories"),
+            },
+            {
+                key: "/profile/tags",
+                icon: <TagsOutlined />,
+                label: "Tag",
+                onClick: () => navigate("/profile/tags"),
+            },
+            {
+                key: "/profile/blogs",
+                icon: <FileTextOutlined />,
+                label: "Blogs",
+                onClick: () => navigate("/profile/blogs"),
+            },
+            {
+                key: "/profile/users",
+                icon: <UserOutlined />,
+                label: "Users",
+                onClick: () => navigate("/profile/users"),
+            },
             ? [
                 {
                     key: "/profile/content-management",

@@ -13,6 +13,7 @@ import BlogDetailManagement from "./pages/admin/Blog/blogDetailManagement.jsx";
 import Blog from "./pages/blog.jsx";
 import BlogDetail from "./pages/blogDetail.jsx";
 import ListOfTag from "./pages/admin/Tag/listOfTag.jsx";
+import ListOfUsers from "./pages/admin/Users/listOfUsers.jsx";
 import ShareBlog from "./pages/shareBlog.jsx";
 import ListOfSubmissions from "./pages/admin/Content/listOfContent.jsx";
 
@@ -64,6 +65,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["admin"]}>
             <ListOfCategory />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "users",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ListOfUsers/>
           </ProtectedRoute>
         ),
       },

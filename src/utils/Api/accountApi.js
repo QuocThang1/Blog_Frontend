@@ -29,6 +29,7 @@ const updateProfileApi = (profileData) => {
         phone: profileData.phone,
         dob: profileData.dob,
         gender: profileData.gender,
+        categories: profileData.categories || [],
     };
     return axios.put(URL_API, data);
 };
