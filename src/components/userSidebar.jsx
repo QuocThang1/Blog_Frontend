@@ -65,6 +65,12 @@ const UserSidebar = () => {
                 label: "Blogs",
                 onClick: () => navigate("/profile/blogs"),
             },
+            {
+                key: "/profile/users",
+                icon: <UserOutlined />,
+                label: "Users",
+                onClick: () => navigate("/profile/users"),
+            },
             ] : []),
         {
             key: "logout",
