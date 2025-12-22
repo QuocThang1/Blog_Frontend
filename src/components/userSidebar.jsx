@@ -7,6 +7,7 @@ import {
     TagsOutlined,
     AppstoreOutlined,
     FileTextOutlined,
+    BulbOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
@@ -71,6 +72,31 @@ const UserSidebar = () => {
                 label: "Users",
                 onClick: () => navigate("/profile/users"),
             },
+            ? [
+                {
+                    key: "/profile/content-management",
+                    icon: <BulbOutlined />,
+                    label: "Content",
+                    onClick: () => navigate("/profile/content-management"),
+                },
+                {
+                    key: "/profile/categories",
+                    icon: <AppstoreOutlined />,
+                    label: "Category",
+                    onClick: () => navigate("/profile/categories"),
+                },
+                {
+                    key: "/profile/tags",
+                    icon: <TagsOutlined />,
+                    label: "Tag",
+                    onClick: () => navigate("/profile/tags"),
+                },
+                {
+                    key: "/profile/blogs",
+                    icon: <FileTextOutlined />,
+                    label: "Blogs",
+                    onClick: () => navigate("/profile/blogs"),
+                },
             ] : []),
         {
             key: "logout",

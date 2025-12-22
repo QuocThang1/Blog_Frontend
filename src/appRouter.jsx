@@ -14,6 +14,8 @@ import Blog from "./pages/blog.jsx";
 import BlogDetail from "./pages/blogDetail.jsx";
 import ListOfTag from "./pages/admin/Tag/listOfTag.jsx";
 import ListOfUsers from "./pages/admin/Users/listOfUsers.jsx";
+import ShareBlog from "./pages/shareBlog.jsx";
+import ListOfSubmissions from "./pages/admin/Content/listOfContent.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,12 @@ const router = createBrowserRouter([
         path: "/blog/:id",
         element: (
           <BlogDetail />
+        ),
+      },
+      {
+        path: "/submissions",
+        element: (
+          <ShareBlog />
         ),
       },
     ],
@@ -43,6 +51,14 @@ const router = createBrowserRouter([
           <ProtectedRoute allowedRoles={["admin", "user"]}>
             <Profile />
           </ProtectedRoute>
+      },
+      {
+        path: "content-management",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ListOfSubmissions />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "categories",
