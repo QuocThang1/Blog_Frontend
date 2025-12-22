@@ -49,6 +49,12 @@ const UserSidebar = () => {
         },
         ...(auth.user.role === "admin"
             ? [{
+                    key: "/profile/content-management",
+                    icon: <BulbOutlined />,
+                    label: "Content",
+                    onClick: () => navigate("/profile/content-management"),
+            },
+            {
                 key: "/profile/categories",
                 icon: <AppstoreOutlined />,
                 label: "Category",
@@ -71,33 +77,7 @@ const UserSidebar = () => {
                 icon: <UserOutlined />,
                 label: "Users",
                 onClick: () => navigate("/profile/users"),
-            },
-            ? [
-                {
-                    key: "/profile/content-management",
-                    icon: <BulbOutlined />,
-                    label: "Content",
-                    onClick: () => navigate("/profile/content-management"),
-                },
-                {
-                    key: "/profile/categories",
-                    icon: <AppstoreOutlined />,
-                    label: "Category",
-                    onClick: () => navigate("/profile/categories"),
-                },
-                {
-                    key: "/profile/tags",
-                    icon: <TagsOutlined />,
-                    label: "Tag",
-                    onClick: () => navigate("/profile/tags"),
-                },
-                {
-                    key: "/profile/blogs",
-                    icon: <FileTextOutlined />,
-                    label: "Blogs",
-                    onClick: () => navigate("/profile/blogs"),
-                },
-            ] : []),
+            },] : []),
         {
             key: "logout",
             icon: <LogoutOutlined />,
