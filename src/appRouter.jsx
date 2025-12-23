@@ -1,4 +1,3 @@
-// Fixed import case sensitivity issues
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./route/ProtectedRoute.jsx";
 import App from "./layout/generalLayout.jsx";
@@ -161,4 +160,4 @@ const router = createBrowserRouter([
 
 export default function AppRouter() {
   return <RouterProvider router={router} />;
-};
+}
