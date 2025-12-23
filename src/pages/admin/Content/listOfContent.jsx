@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Button, Space, Popconfirm, Tag, Input, Tabs, Card, Statistic, Row, Col } from "antd";
+import { Table, Button, Space, Popconfirm, Tag, Input, Tabs, Card, Statistic, Row, Col, Empty } from "antd";
 import {
     CheckOutlined,
     CloseOutlined,
@@ -373,6 +373,17 @@ const ListOfSubmissions = () => {
                 }}
                 scroll={{ x: 1200 }}
                 className="admin-management-table"
+                locale={{
+                    emptyText: (
+                        <Empty
+                            description={
+                                <span style={{ color: "black" }}>
+                                    No Blog Available
+                                </span>
+                            }
+                        />
+                    ),
+                }}
             />
         </div>
     );
