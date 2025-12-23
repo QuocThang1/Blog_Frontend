@@ -30,9 +30,9 @@ const approveSubmissionApi = (submissionId) => {
     return axios.post(URL_API);
 };
 
-const rejectSubmissionApi = (submissionId) => {
+const rejectSubmissionApi = (submissionId, reason) => {
     const URL_API = `/v1/api/submissions/${submissionId}/reject`;
-    return axios.post(URL_API);
+    return axios.post(URL_API, { reason });
 };
 
 const deleteSubmissionApi = (submissionId) => {
