@@ -7,6 +7,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import AppRouter from './appRouter.jsx';
 import './styles/global.css';
 
+// Global unhandled rejection handler to avoid uncaught promise errors
+window.addEventListener('unhandledrejection', (event) => {
+  // Log for debugging
+  console.error('Unhandled promise rejection:', event.reason);
+  // Optionally show user-visible notification (toast) here
+  // import('react-toastify').then(({ toast }) => toast.error('An error occurred. Please try again.'))
+  // Prevent default to avoid uncaught (in promise) message in console
+  // event.preventDefault();
+});
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>

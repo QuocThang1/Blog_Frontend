@@ -8,6 +8,12 @@ import {
     AppstoreOutlined,
     FileTextOutlined,
     BulbOutlined,
+    BarChartOutlined,
+    SafetyOutlined,
+    TeamOutlined,
+    CheckCircleOutlined,
+    FileExcelOutlined,
+    DashboardOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
@@ -48,36 +54,57 @@ const UserSidebar = () => {
             onClick: () => navigate("/profile"),
         },
         ...(auth.user.role === "admin"
-            ? [{
-                    key: "/profile/content-management",
-                    icon: <BulbOutlined />,
-                    label: "Content",
-                    onClick: () => navigate("/profile/content-management"),
-            },
-            {
-                key: "/profile/categories",
-                icon: <AppstoreOutlined />,
-                label: "Category",
-                onClick: () => navigate("/profile/categories"),
-            },
-            {
-                key: "/profile/tags",
-                icon: <TagsOutlined />,
-                label: "Tag",
-                onClick: () => navigate("/profile/tags"),
-            },
-            {
-                key: "/profile/blogs",
-                icon: <FileTextOutlined />,
-                label: "Blogs",
-                onClick: () => navigate("/profile/blogs"),
-            },
-            {
-                key: "/profile/users",
-                icon: <UserOutlined />,
-                label: "Users",
-                onClick: () => navigate("/profile/users"),
-            },] : []),
+            ? [
+                    {
+                        key: "/profile/dashboard",
+                        icon: <DashboardOutlined />,
+                        label: "AI Dashboard",
+                        onClick: () => navigate("/profile/dashboard"),
+                    },
+                    {
+                        key: "/profile/segmentation",
+                        icon: <TeamOutlined />,
+                        label: "Segmentation",
+                        onClick: () => navigate("/profile/segmentation"),
+                    },
+                    {
+                        key: "/profile/reports",
+                        icon: <FileExcelOutlined />,
+                        label: "Reports",
+                        onClick: () => navigate("/profile/reports"),
+                    },
+                    {
+                        key: "/profile/content-management",
+                        icon: <BulbOutlined />,
+                        label: "Content",
+                        onClick: () => navigate("/profile/content-management"),
+                    },
+                    {
+                        key: "/profile/categories",
+                        icon: <AppstoreOutlined />,
+                        label: "Category",
+                        onClick: () => navigate("/profile/categories"),
+                    },
+                    {
+                        key: "/profile/tags",
+                        icon: <TagsOutlined />,
+                        label: "Tag",
+                        onClick: () => navigate("/profile/tags"),
+                    },
+                    {
+                        key: "/profile/blogs",
+                        icon: <FileTextOutlined />,
+                        label: "Blogs",
+                        onClick: () => navigate("/profile/blogs"),
+                    },
+                    {
+                        key: "/profile/users",
+                        icon: <UserOutlined />,
+                        label: "Users",
+                        onClick: () => navigate("/profile/users"),
+                    },
+            ]
+            : []),
         {
             key: "logout",
             icon: <LogoutOutlined />,

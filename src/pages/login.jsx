@@ -1,7 +1,8 @@
 import { useState, useContext } from "react";
 import { Form, Input, Button, Card, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { loginApi, googleLoginApi } from "../utils/Api/accountApi";
+import { loginApi, googleLoginApi, getAccountApi } from "../utils/Api/accountApi";
+import FavoriteCategoriesModal from "../components/FavoriteCategoriesModal";
 import { useGoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +11,37 @@ import "../styles/login.css";
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
+    const [showTopicsModal, setShowTopicsModal] = useState(false);
     const navigate = useNavigate();
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth, auth } = useContext(AuthContext);
+
+    const refreshAccountAndMaybeShowModal = async () => {
+        try {
+            const acc = await getAccountApi();
+            const accountData = acc?.data || {};
+            setAuth({
+                isAuthenticated: true,
+                user: {
+                    _id: accountData._id || "",
+                    email: accountData.email || "",
+                    fullName: accountData.fullName || "",
+                    username: accountData.username || "",
+                    dob: accountData.dob || "",
+                    gender: accountData.gender || "",
+                    phone: accountData.phone || "",
+                    role: accountData.role || "user",
+                    categories: accountData.categories || [],
+                }
+            });
+
+            if (!accountData.categories || accountData.categories.length === 0) {
+                setShowTopicsModal(true);
+            }
+        } catch (err) {
+            console.error('Failed to refresh account after login:', err);
+        }
+    };
+
     // prepare Google login function (hook must be called at top-level)
     const googleLogin = useGoogleLogin({
         onSuccess: async (credentialResponse) => {
@@ -27,18 +57,8 @@ const Login = () => {
                 if (res && res.access_token) {
                     localStorage.setItem('access_token', res.access_token);
                     toast.success(res.EM || 'Login with Google successful', { autoClose: 2000 });
-                    setAuth({
-                        isAuthenticated: true,
-                        user: {
-                            email: res.data?.email || '',
-                            fullName: res.data?.fullName || '',
-                            username: res.data?.username || '',
-                            dob: res.data?.dob || '',
-                            gender: res.data?.gender || '',
-                            phone: res.data?.phone || '',
-                            role: res.data?.role || 'user',
-                        }
-                    });
+                    // Refresh full account and show modal if needed
+                    await refreshAccountAndMaybeShowModal();
                     navigate('/');
                 } else {
                     toast.error('Google login failed');
@@ -67,19 +87,8 @@ const Login = () => {
 
                 toast.success(res.EM || "Login successful!", { autoClose: 2000 });
 
-                // Cập nhật auth context
-                setAuth({
-                    isAuthenticated: true,
-                    user: {
-                        email: res.data?.email || "",
-                        fullName: res.data?.fullName || "",
-                        username: res.data?.username || "",
-                        dob: res.data?.dob || "",
-                        gender: res.data?.gender || "",
-                        phone: res.data?.phone || "",
-                        role: res.data?.role || "user",
-                    },
-                });
+                // Refresh full account and show modal if no categories
+                await refreshAccountAndMaybeShowModal();
 
                 // Chuyển hướng về trang chủ
                 navigate("/");
@@ -171,7 +180,14 @@ const Login = () => {
                                     block
                                     size="large"
                                     loading={loading}
-                                    onClick={() => googleLogin()}
+                                    onClick={async () => {
+                                        try {
+                                            await googleLogin();
+                                        } catch (err) {
+                                            console.error('Google login invocation error:', err);
+                                            toast.error('Google login failed — try again or use normal login.');
+                                        }
+                                    }}
                                     aria-label="Login with Google"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20" style={{ marginRight: 10 }}>
@@ -197,8 +213,12 @@ const Login = () => {
                         </a>
                     </div>
                 </Form>
-            </Card>
-        </div>
+            </Card>            <FavoriteCategoriesModal
+                open={showTopicsModal}
+                onClose={() => setShowTopicsModal(false)}
+                onSaved={async () => { await refreshAccountAndMaybeShowModal(); setShowTopicsModal(false); }}
+                initialSelected={auth?.user?.categories || []}
+            />        </div>
     );
 };
 

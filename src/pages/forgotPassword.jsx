@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Card, Form, Input, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { requestPasswordResetApi, verifyOtpApi, resetPasswordApi } from '../utils/Api/accountApi';
 import '../styles/login.css';
@@ -11,6 +12,7 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [resetToken, setResetToken] = useState(null);
   const [devInfo, setDevInfo] = useState(null);
+  const navigate = useNavigate();
 
   const onRequest = async (values) => {
     setLoading(true);
@@ -49,7 +51,14 @@ export default function ForgotPassword() {
     try {
       const res = await resetPasswordApi(resetToken || values.resetToken, values.newPassword);
       toast.success(res.EM || 'Password reset successful');
-      setStep(1);
+
+      // Capture dev preview if provided
+      if (res?.data?.preview) setDevInfo({ ...devInfo, previewUrl: res.data.preview });
+
+      // Auto-redirect to login page after success
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
     } catch (err) {
       console.error('Reset password error:', err);
       toast.error(err?.response?.data?.message || 'Failed to reset password');
@@ -121,9 +130,24 @@ export default function ForgotPassword() {
             <Form.Item name="newPassword" label="New password" rules={[{ required: true, min: 6 }]}>
               <Input.Password size="large" />
             </Form.Item>
-            {/* allow pasting resetToken if user didn't get one (but normally we set it from verify response) */}
-            <Form.Item name="resetToken" label="Reset token (optional)" initialValue={resetToken}>
-              <Input disabled={!!resetToken} value={resetToken || ''} />
+
+            <Form.Item
+              name="confirmPassword"
+              label="Confirm new password"
+              dependencies={["newPassword"]}
+              rules={[
+                { required: true, message: 'Please confirm your new password' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('newPassword') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('The two passwords that you entered do not match'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password size="large" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" block size="large" loading={loading} htmlType="submit">

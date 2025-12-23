@@ -65,7 +65,7 @@ const CategoryModal = ({ open, category, onSuccess, onCancel }) => {
             okText={category ? "Update" : "Create"}
             cancelText="Cancel"
             width={600}
-            destroyOnClose
+            destroyOnHidden
             className="admin-management-modal"
         >
             <Form

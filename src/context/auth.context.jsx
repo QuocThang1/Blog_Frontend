@@ -11,5 +11,6 @@ export const AuthContext = createContext({
         gender: "",
         phone: "",
         role: "",
+        categories: [],
     },
 });

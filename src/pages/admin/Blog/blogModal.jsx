@@ -154,7 +154,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
             cancelText="Cancel"
             width={800}
             confirmLoading={loading}
-            destroyOnClose
+            destroyOnHidden
             className="admin-management-modal"
         >
             <Form
