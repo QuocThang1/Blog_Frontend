@@ -17,7 +17,9 @@ export default function ForgotPassword() {
   const onRequest = async (values) => {
     setLoading(true);
     try {
+      console.log('Sending OTP request to:', values.email);
       const res = await requestPasswordResetApi(values.email);
+      console.log('OTP response:', res);
       toast.success(res.EM || 'If that email exists, an OTP was sent');
       // capture dev-only info (OTP + Ethereal previewUrl) to help local testing
       if (res?.dev) setDevInfo(res.dev);
@@ -25,7 +27,11 @@ export default function ForgotPassword() {
       setStep(2);
     } catch (err) {
       console.error('Request password reset error:', err);
-      toast.error(err?.response?.data?.message || 'Failed to request password reset');
+      if (err.code === 'ECONNABORTED') {
+        toast.error('Request timed out. Please try again.');
+      } else {
+        toast.error(err?.response?.data?.message || err?.message || 'Failed to request password reset');
+      }
     } finally {
       setLoading(false);
     }
