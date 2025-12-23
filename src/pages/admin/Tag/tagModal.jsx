@@ -76,7 +76,7 @@ const TagModal = ({ open, tag, onSuccess, onCancel }) => {
             okText={tag ? "Update" : "Create"}
             cancelText="Cancel"
             width={600}
-            destroyOnClose
+            destroyOnHidden
             className="admin-management-modal"
         >
             <Form

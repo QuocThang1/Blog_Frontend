@@ -13,8 +13,15 @@ import BlogDetailManagement from "./pages/admin/Blog/blogDetailManagement.jsx";
 import Blog from "./pages/blog.jsx";
 import BlogDetail from "./pages/blogDetail.jsx";
 import ListOfTag from "./pages/admin/Tag/listOfTag.jsx";
+import ListOfUsers from "./pages/admin/Users/listOfUsers.jsx";
 import ShareBlog from "./pages/shareBlog.jsx";
 import ListOfSubmissions from "./pages/admin/Content/listOfContent.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import UserInsights from "./pages/admin/UserInsights.jsx";
+import ModerationQueue from "./pages/admin/ModerationQueue.jsx";
+import UserSegmentation from "./pages/admin/UserSegmentation.jsx";
+import Recommendations from "./pages/admin/Recommendations.jsx";
+import AdminReports from "./pages/admin/AdminReports.jsx";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +75,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "users",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ListOfUsers/>
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "tags",
         element: (
           <ProtectedRoute allowedRoles={["admin"]}>
@@ -88,6 +103,54 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["admin"]}>
             <BlogDetailManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "insights",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <UserInsights />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "moderation",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <ModerationQueue />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "segmentation",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <UserSegmentation />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "recommendations",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Recommendations />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "reports",
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminReports />
           </ProtectedRoute>
         ),
       },

@@ -234,7 +234,9 @@
 /* Blog Card Footer with Tags */
 .blog-card-footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
     margin-top: 12px;
 }
@@ -243,6 +245,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+    width: 100%; /* ensure tags area drops to its own row so category + For you stay together */
+    margin-top: 8px;
 }
 
 /* Responsive */

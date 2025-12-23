@@ -8,6 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { getBlogByIdApi, incrementBlogViewsApi } from "../utils/Api/blogApi";
 import { toggleLikeBlogApi, checkUserLikedApi } from "../utils/Api/likeApi";
 import { summaryBlogApi } from "../utils/Api/aiSummarizeApi";
+import { translateApi } from "../utils/Api/translationApi";
 import { AuthContext } from "../context/auth.context";
 import CommentSection from "../components/commentSection";
 import AnotherBlogs from "../components/anotherBlogs";
@@ -25,6 +26,11 @@ const BlogDetail = () => {
     const [summaryModalVisible, setSummaryModalVisible] = useState(false);
     const [summary, setSummary] = useState("");
     const [summarizing, setSummarizing] = useState(false);
+    const [originalContent, setOriginalContent] = useState("");
+    const [displayContent, setDisplayContent] = useState("");
+    const [translationLang, setTranslationLang] = useState("vi");
+    const [translating, setTranslating] = useState(false);
+
     const viewCountedRef = useRef(new Set());
 
     useEffect(() => {
@@ -38,6 +44,9 @@ const BlogDetail = () => {
             if (res && res.EC === 0) {
                 setBlog(res.data);
                 setLikesCount(res.data.likesCount || 0);
+                setOriginalContent(res.data.content);
+                setDisplayContent(res.data.content);
+
                 await handleIncrementView(id);
 
                 if (auth.isAuthenticated) {
@@ -121,7 +130,8 @@ const BlogDetail = () => {
             return;
         }
 
-        if (!blog || !blog.content) {
+        // Use displayContent instead of blog.content so it summarizes translated content if available
+        if (!displayContent || !displayContent.trim()) {
             toast.error("Không có nội dung để tóm tắt");
             return;
         }
@@ -131,7 +141,7 @@ const BlogDetail = () => {
         setSummary("");
 
         try {
-            const res = await summaryBlogApi(blog.content);
+            const res = await summaryBlogApi(displayContent);
             if (res && res.success) {
                 setSummary(res.data.summary);
             } else {
@@ -145,6 +155,41 @@ const BlogDetail = () => {
         } finally {
             setSummarizing(false);
         }
+    };
+
+    const handleTranslateContent = async () => {
+        if (!auth.isAuthenticated) {
+            toast.warning("Please login to translate");
+            return;
+        }
+
+        if (!originalContent?.trim()) {
+            toast.warning("Content is empty");
+            return;
+        }
+
+        setTranslating(true);
+
+        try {
+            const res = await translateApi(originalContent, translationLang);
+            
+            if (res && res[translationLang]) {
+                // ✅ Thay trực tiếp nội dung hiển thị
+                setDisplayContent(res[translationLang]);
+                toast.success("Translation successful!");
+            } else {
+                throw new Error(res?.error || "Translate failed");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || "Translate failed");
+        } finally {
+            setTranslating(false);
+        }
+    };
+    const handleResetLanguage = () => {
+        setDisplayContent(originalContent);
+        setTranslationLang("vi");
     };
 
     return (
@@ -292,10 +337,41 @@ const BlogDetail = () => {
                                     AI Summary
                                 </Button>
                             </Space>
+
+                            <Space size="middle">
+                                <br></br>
+                                <select
+                                    value={translationLang}
+                                    onChange={(e) => setTranslationLang(e.target.value)}
+                                    disabled={translating}
+                                    style={{ padding: "4px 8px", borderRadius: 4 }}
+                                >
+                                    <option value="vi">Vietnamese</option>
+                                    <option value="en">English</option>
+                                    <option value="fr">French</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="zh">Chinese</option>
+                                    <option value="hi">Hindi</option>
+                                </select>
+
+                                <Button
+                                    type="primary"
+                                    loading={translating}
+                                    onClick={handleTranslateContent}
+                                >
+                                    Translate
+                                </Button>
+
+                                {translationLang !== "vi" && (
+                                    <Button onClick={handleResetLanguage}>
+                                        Original
+                                    </Button>
+                                )}
+                            </Space>
                         </div>
 
                         <div className="blog-detail-content">
-                            {blog.content.split('\n').map((paragraph, index) => (
+                            {displayContent.split('\n').map((paragraph, index) => (
                                 paragraph.trim() && <p key={index}>{paragraph}</p>
                             ))}
                         </div>

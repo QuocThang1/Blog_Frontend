@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Input, Select, Row, Col, Card, Avatar, Tag, Empty, Pagination, Space } from "antd";
-import { SearchOutlined, UserOutlined } from "@ant-design/icons";
+import { SearchOutlined, UserOutlined, FireOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { getAllBlogsApi } from "../utils/Api/blogApi";
+import { AuthContext } from "../context/auth.context";
 import { getAllCategoriesApi } from "../utils/Api/categoryApi";
 import { getAllTagsApi } from "../utils/Api/tagApi";
 import { toast } from "react-toastify";
@@ -95,6 +96,9 @@ const Blog = () => {
         setCurrentPage(page);
         setPageSize(size);
     };
+
+    const { auth } = useContext(AuthContext);
+    const favIds = (auth?.user?.categories || []).map(c => (c._id || c).toString());
 
     return (
         <div className="blog-page">
@@ -243,9 +247,30 @@ const Blog = () => {
 
                                         <div className="blog-card-footer">
                                             {blog.category && (
-                                                <Tag className="blog-card-category">
-                                                    {blog.category.name}
-                                                </Tag>
+                                                <>
+                                                    <Tag className="blog-card-category">
+                                                        {blog.category.name}
+                                                    </Tag>
+                                                    {favIds.includes(String(blog.category._id || blog.category)) && (
+                                                        <Tag
+                                                            title="Recommended for you"
+                                                            style={{
+                                                                marginLeft: 8,
+                                                                border: '1px solid #ff4d4f',
+                                                                color: '#ff4d4f',
+                                                                background: 'transparent',
+                                                                fontWeight: 600,
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                gap: 6,
+                                                                padding: '4px 8px'
+                                                            }}
+                                                        >
+                                                            <FireOutlined />
+                                                            For you
+                                                        </Tag>
+                                                    )}
+                                                </>
                                             )}
 
                                             {blog.tags && blog.tags.length > 0 && (
