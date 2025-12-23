@@ -39,16 +39,35 @@ const ShareBlog = () => {
 
     const handleSubmit = async (values) => {
         setLoading(true);
+
+        const validatingToastId = toast.info("AI is validating your PDF... Please wait.", {
+            autoClose: false, // 
+            closeButton: false
+        });
+
         try {
             const res = await createSubmissionApi(values.link);
+
+            toast.dismiss(validatingToastId);
+
             if (res && res.EC === 0) {
-                toast.success(res.EM || "Submission sent successfully!");
+                toast.success(res.EM || "Submission created successfully!");
                 form.resetFields();
                 await fetchMySubmissions();
             } else {
-                toast.error(res.EM || "Failed to submit");
+                toast.error(res.EM || "Submission rejected due to validation failure");
+
+                if (res.data?.validation?.missingFields?.length > 0) {
+                    toast.warning(`Missing fields: ${res.data.validation.missingFields.join(", ")}`, {
+                        autoClose: 8000
+                    });
+                }
+
+                await fetchMySubmissions();
             }
         } catch (error) {
+            toast.dismiss(validatingToastId);
+
             console.error("Submit error:", error);
             toast.error(error?.response?.data?.EM || "Failed to submit");
         } finally {
