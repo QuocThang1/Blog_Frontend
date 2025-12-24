@@ -27,7 +27,7 @@ export default function AdminReports() {
       setReport(res.data);
       toast.success('Report generated');
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Failed to generate report');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to generate report');
     } finally {
       setLoading(false);
     }
@@ -120,7 +120,7 @@ export default function AdminReports() {
                   <List
                     dataSource={report.report.highlights}
                     renderItem={(item, idx) => (
-                      <List.Item key={idx} style={{ paddingLeft: 0 }}>
+                      <List.Item key={`${JSON.stringify(item).slice(0,30)}-${idx}`} style={{ paddingLeft: 0 }}>
                         <div style={{
                           padding: 12,
                           backgroundColor: '#f6ffed',
@@ -157,7 +157,7 @@ export default function AdminReports() {
                   <List
                     dataSource={report.report.issues}
                     renderItem={(item, idx) => (
-                      <List.Item key={idx} style={{ paddingLeft: 0 }}>
+                      <List.Item key={`${JSON.stringify(item).slice(0,30)}-${idx}`} style={{ paddingLeft: 0 }}>
                         <div style={{
                           padding: 12,
                           backgroundColor: '#fff1f0',
@@ -192,7 +192,7 @@ export default function AdminReports() {
               <List
                 dataSource={report.report.actions}
                 renderItem={(item, idx) => (
-                  <List.Item key={idx} style={{ paddingLeft: 0, marginBottom: 12 }}>
+                  <List.Item key={`${JSON.stringify(item).slice(0,30)}-${idx}`} style={{ paddingLeft: 0, marginBottom: 12 }}>
                     <div style={{
                       padding: 12,
                       backgroundColor: '#fffbe6',

@@ -72,89 +72,120 @@ export default function UserInsights() {
 
       {data && data.aiInsights && (
         <div>
-          {/* USER STATUS */}
-          {data.aiInsights.user_status && (
-            <Card style={{ marginBottom: 24, backgroundColor: '#f0f8ff' }}>
-              <h3>👤 User Status</h3>
-              <Alert
-                message={data.aiInsights.user_status}
-                type="info"
-                showIcon
-              />
-            </Card>
-          )}
+          {/* USER STATUS + SUGGESTION COMBINED */}
+          <Card style={{ marginBottom: 24, backgroundColor: '#f0f8ff', borderRadius: 8 }}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} md={12}>
+                <h3>👤 User Status</h3>
+                <Alert
+                  message={data.aiInsights.userStatusAndAdvice || '—'}
+                  type={data.aiInsights.segment === 'ACTIVE' ? 'success' : data.aiInsights.segment === 'QUALITY_CONTRIBUTOR' ? 'info' : 'warning'}
+                  showIcon
+                  style={{ marginTop: 8 }}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <h3>💡 Suggestion</h3>
+                <Alert
+                  message={data.aiInsights.engagement_advice || 'Monitor engagement regularly'}
+                  type="warning"
+                  showIcon
+                  style={{ marginTop: 8 }}
+                />
+              </Col>
+            </Row>
+          </Card>
 
           {/* KEY METRICS */}
           <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
-            {data.aiInsights.total_engagement !== undefined && (
-              <Col xs={24} sm={12} md={6}>
-                <Card>
-                  <Statistic
-                    title="Total Engagement"
-                    value={data.aiInsights.total_engagement}
-                    prefix={<FireOutlined />}
-                    valueStyle={{ color: '#faad14' }}
-                  />
-                </Card>
-              </Col>
-            )}
+            <Col xs={24} sm={12} md={6}>
+              <Card>
+                <Statistic
+                  title="Total Engagement"
+                  value={data.stats?.blogs + data.stats?.comments + data.stats?.likes || 0}
+                  prefix={<FireOutlined />}
+                  valueStyle={{ color: '#faad14' }}
+                />
+              </Card>
+            </Col>
 
-            {data.aiInsights.activity_level && (
-              <Col xs={24} sm={12} md={6}>
-                <Card>
-                  <Statistic
-                    title="Activity Level"
-                    value={data.aiInsights.activity_level}
-                    valueStyle={{ color: '#1890ff' }}
-                  />
-                </Card>
-              </Col>
-            )}
+            <Col xs={24} sm={12} md={6}>
+              <Card>
+                <Statistic
+                  title="📊 How to Improve"
+                  value={data.aiInsights.engagement_advice || 'Post more content'}
+                  valueStyle={{ color: '#1890ff', fontSize: 12 }}
+                />
+              </Card>
+            </Col>
 
-            {data.aiInsights.last_active_days !== undefined && (
-              <Col xs={24} sm={12} md={6}>
-                <Card>
-                  <Statistic
-                    title="Days Since Active"
-                    value={data.aiInsights.last_active_days}
-                    valueStyle={{ color: data.aiInsights.last_active_days > 7 ? '#ff4d4f' : '#52c41a' }}
-                  />
-                </Card>
-              </Col>
-            )}
+            <Col xs={24} sm={12} md={6}>
+              <Card>
+                <Statistic
+                  title="Activity Level"
+                  value={data.aiInsights.activity_level || 'Not specified'}
+                  valueStyle={{ color: '#1890ff' }}
+                />
+              </Card>
+            </Col>
 
-            {data.stats && (
-              <Col xs={24} sm={12} md={6}>
-                <Card>
-                  <Statistic
-                    title="Total Blogs"
-                    value={data.stats?.blogs || 0}
-                    prefix={<EyeOutlined />}
-                  />
-                </Card>
-              </Col>
-            )}
+            <Col xs={24} sm={12} md={6}>
+              <Card>
+                <Statistic
+                  title="Days Inactive"
+                  value={data.aiInsights.last_active_days !== undefined ? data.aiInsights.last_active_days : '—'}
+                  valueStyle={{ color: data.aiInsights.last_active_days > 7 ? '#ff4d4f' : '#52c41a' }}
+                />
+              </Card>
+            </Col>
           </Row>
 
-          {/* BEHAVIOR SUMMARY */}
-          {data.aiInsights.behavior_summary && (
-            <Card title="📊 Behavior Summary" style={{ marginBottom: 24 }}>
-              <p>{data.aiInsights.behavior_summary}</p>
-            </Card>
-          )}
+          {/* BEHAVIOR ANALYSIS */}
+          <Card title="📋 Behavior Analysis" style={{ marginBottom: 24 }}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} md={12}>
+                <h4>Summary:</h4>
+                <p>{data.aiInsights.behavior_summary || 'No behavior data available'}</p>
+              </Col>
+              <Col xs={24} md={12}>
+                <h4>⚠️ Advice:</h4>
+                <p>{data.aiInsights.activity_advice || 'Continue monitoring engagement'}</p>
+              </Col>
+            </Row>
+          </Card>
 
-          {/* MAIN INTERESTS */}
-          {data.aiInsights.main_interests && data.aiInsights.main_interests.length > 0 && (
-            <Card title="🎯 Main Interests" style={{ marginBottom: 24 }}>
-              <Space wrap>
-                {data.aiInsights.main_interests.map((interest, idx) => (
-                  <Tag key={idx} color="blue" style={{ padding: '6px 12px', fontSize: 12 }}>
-                    {interest}
-                  </Tag>
-                ))}
-              </Space>
-            </Card>
-          )}
+          {/* ACTIVITY & RISK ASSESSMENT */}
+          <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+            <Col xs={24} sm={12}>
+              <Card>
+                <div style={{ paddingBottom: 12 }}>
+                  <h4>Activity Level</h4>
+                  <p style={{ fontSize: 18, color: '#1890ff', margin: 0 }}>{data.aiInsights.activity_level || 'Not specified'}</p>
+                </div>
+              </Card>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Card>
+                <div style={{ paddingBottom: 12 }}>
+                  <h4>⚠️ Risk Assessment</h4>
+                  {data.aiInsights.churnRisk !== undefined && (
+                    <Progress
+                      type="circle"
+                      percent={data.aiInsights.churnRisk}
+                      width={80}
+                      strokeColor={
+                        data.aiInsights.churnRisk > 70
+                          ? '#ff4d4f'
+                          : data.aiInsights.churnRisk > 40
+                          ? '#faad14'
+                          : '#52c41a'
+                      }
+                    />
+                  )}
+                </div>
+              </Card>
+            </Col>
+          </Row>
 
           {/* KEY INSIGHTS */}
           {data.aiInsights.key_insights && data.aiInsights.key_insights.length > 0 && (
@@ -162,14 +193,16 @@ export default function UserInsights() {
               <List
                 dataSource={data.aiInsights.key_insights}
                 renderItem={(insight, idx) => (
-                  <List.Item key={idx} style={{ paddingLeft: 0 }}>
-                    <div style={{
-                      padding: 12,
-                      backgroundColor: '#fffbe6',
-                      borderLeft: '4px solid #faad14',
-                      borderRadius: 4,
-                      width: '100%'
-                    }}>
+                  <List.Item key={`${insight?.slice(0, 30)}-${idx}`} style={{ paddingLeft: 0 }}>
+                    <div
+                      style={{
+                        padding: 12,
+                        backgroundColor: '#fffbe6',
+                        borderLeft: '4px solid #faad14',
+                        borderRadius: 4,
+                        width: '100%'
+                      }}
+                    >
                       {insight}
                     </div>
                   </List.Item>
@@ -178,30 +211,31 @@ export default function UserInsights() {
             </Card>
           )}
 
-          {/* STATS IF AVAILABLE */}
+          {/* MAIN INTERESTS */}
+          {data.aiInsights.main_interests && data.aiInsights.main_interests.length > 0 && (
+            <Card title="🎯 Main Interests" style={{ marginBottom: 24 }}>
+              <Space wrap>
+                {data.aiInsights.main_interests.map((interest, idx) => (
+                  <Tag key={`${interest}-${idx}`} color="blue" style={{ padding: '6px 12px', fontSize: 12 }}>
+                    {interest}
+                  </Tag>
+                ))}
+              </Space>
+            </Card>
+          )}
+
+          {/* ENGAGEMENT STATS */}
           {data.stats && (
             <Card title="📈 Engagement Stats" style={{ marginBottom: 24 }}>
               <Row gutter={[16, 16]}>
                 <Col xs={12} sm={8}>
-                  <Statistic
-                    title="Blog Reads"
-                    value={data.stats?.reads || 0}
-                    prefix={<EyeOutlined />}
-                  />
+                  <Statistic title="Blogs" value={data.stats?.blogs || 0} prefix={<EyeOutlined />} />
                 </Col>
                 <Col xs={12} sm={8}>
-                  <Statistic
-                    title="Comments Made"
-                    value={data.stats?.comments || 0}
-                    prefix={<MessageOutlined />}
-                  />
+                  <Statistic title="Comments" value={data.stats?.comments || 0} prefix={<MessageOutlined />} />
                 </Col>
                 <Col xs={12} sm={8}>
-                  <Statistic
-                    title="Likes Given"
-                    value={data.stats?.likes || 0}
-                    prefix={<FireOutlined />}
-                  />
+                  <Statistic title="Likes" value={data.stats?.likes || 0} prefix={<FireOutlined />} />
                 </Col>
               </Row>
             </Card>

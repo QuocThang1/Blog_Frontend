@@ -27,7 +27,7 @@ export default function Recommendations() {
       setData(res.data);
       toast.success('Recommendations generated');
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Failed to generate recommendations');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to generate recommendations');
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export default function Recommendations() {
               <List
                 dataSource={data.recommendations.recommended_users}
                 renderItem={(user, idx) => (
-                  <List.Item key={idx} style={{ padding: 12, marginBottom: 12, backgroundColor: '#f5f5f5', borderRadius: 4 }}>
+                  <List.Item key={`${user.username || user.userId}-${idx}`} style={{ padding: 12, marginBottom: 12, backgroundColor: '#f5f5f5', borderRadius: 4 }}>
                     <Space direction="vertical" style={{ width: '100%' }}>
                       <div>
                         <Tag color="blue" style={{ fontSize: 12 }}>{user.username}</Tag>
@@ -97,7 +97,7 @@ export default function Recommendations() {
             <Card title="🏷️ Tags to Explore" style={{ marginBottom: 24 }}>
               <Space wrap>
                 {data.recommendations.recommended_tags.map((tag, idx) => (
-                  <Tag key={idx} color="cyan" style={{ padding: '6px 12px', fontSize: 12 }}>
+                  <Tag key={`${tag}-${idx}`} color="cyan" style={{ padding: '6px 12px', fontSize: 12 }}>
                     {tag}
                   </Tag>
                 ))}
@@ -111,7 +111,7 @@ export default function Recommendations() {
               <List
                 dataSource={data.recommendations.trending_topics}
                 renderItem={(topic, idx) => (
-                  <List.Item key={idx} style={{ paddingLeft: 0 }}>
+                  <List.Item key={`${topic?.slice(0,30)}-${idx}`} style={{ paddingLeft: 0 }}>
                     <Tag color="orange">{topic}</Tag>
                   </List.Item>
                 )}

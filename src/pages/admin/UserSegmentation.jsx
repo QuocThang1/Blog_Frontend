@@ -24,7 +24,7 @@ export default function UserSegmentation() {
       toast.success('User segmentation completed');
       fetchSegmentDetails('ACTIVE');
     } catch (err) {
-      toast.error('Failed to run segmentation');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to run segmentation');
     } finally {
       setLoading(false);
     }
@@ -37,7 +37,7 @@ export default function UserSegmentation() {
       setSegmentDetails(res.data);
       setActiveSegment(segment);
     } catch (err) {
-      toast.error('Failed to load segment details');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to load segment details');
     } finally {
       setSegmentLoading(false);
     }
