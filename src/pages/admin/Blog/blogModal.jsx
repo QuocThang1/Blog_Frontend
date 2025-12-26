@@ -72,12 +72,12 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                 toast.success(res.EM || "Image uploaded successfully", { autoClose: 1500 });
                 onUploadSuccess("ok");
             } else {
-                toast.error(res.EM || "Failed to upload image");
-                onError(new Error(res.EM || "Upload failed"));
+                toast.error(res.message || "Failed to upload image");
+                onError(new Error(res.message || "Upload failed"));
             }
         } catch (error) {
             console.error("Upload image error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to upload image");
+            toast.error(error.message || "Failed to upload image");
             onError(error);
         } finally {
             setUploading(false);
@@ -124,14 +124,14 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                 setImagePublicId("");
                 onSuccess();
             } else {
-                toast.error(res.EM || `Failed to ${blog ? "update" : "create"} blog`);
+                toast.error(res.message || `Failed to ${blog ? "update" : "create"} blog`);
             }
         } catch (error) {
             if (error.errorFields) {
                 return;
             }
             console.error("Submit blog error:", error);
-            toast.error(error?.response?.data?.EM || `Failed to ${blog ? "update" : "create"} blog`);
+            toast.error(error.message || `Failed to ${blog ? "update" : "create"} blog`);
         } finally {
             setLoading(false);
         }

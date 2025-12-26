@@ -24,7 +24,7 @@ const ListOfTag = () => {
             if (res && res.EC === 0) {
                 setTags(res.data || []);
             } else {
-                toast.error(res.EM || "Failed to fetch tags");
+                toast.error(res.message || "Failed to fetch tags");
             }
         } catch (error) {
             console.error("Fetch tags error:", error);
@@ -51,11 +51,11 @@ const ListOfTag = () => {
                 toast.success(res.EM || "Tag deleted successfully");
                 fetchTags();
             } else {
-                toast.error(res.EM || "Failed to delete tag");
+                toast.error(res.message || "Failed to delete tag");
             }
         } catch (error) {
             console.error("Delete tag error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to delete tag");
+            toast.error(error.message || "Failed to delete tag");
         }
     };
 

@@ -88,11 +88,11 @@ const Profile = () => {
                     },
                 });
             } else {
-                toast.error(res.EM || "Failed to update profile");
+                toast.error(res.message || "Failed to update profile");
             }
         } catch (error) {
             console.error("Update profile error:", error);
-            toast.error(error?.response?.data?.message || "Failed to update profile");
+            toast.error(error.message || "Failed to update profile");
         } finally {
             setLoading(false);
         }
@@ -200,24 +200,24 @@ const Profile = () => {
 
                     {/* NEW: Multi-Select Categories */}
                     <Form.Item label="Preferred Categories" name="categories">
-                    <Select
-                        mode="multiple"
-                        placeholder="Select categories"
-                        size="large"
-                        className="profile-input"
-                        options={categoryOptions}
-                        allowClear
-                        tagRender={({ label, value, closable, onClose }) => (
-                        <Tag
-                            color="#409cff"   // màu xanh dương
-                            closable={closable}
-                            onClose={onClose}
-                            style={{ marginRight: 3 }}
-                        >
-                            {label}
-                        </Tag>
-                        )}
-                    />
+                        <Select
+                            mode="multiple"
+                            placeholder="Select categories"
+                            size="large"
+                            className="profile-input"
+                            options={categoryOptions}
+                            allowClear
+                            tagRender={({ label, closable, onClose }) => (
+                                <Tag
+                                    color="#409cff"   // màu xanh dương
+                                    closable={closable}
+                                    onClose={onClose}
+                                    style={{ marginRight: 3 }}
+                                >
+                                    {label}
+                                </Tag>
+                            )}
+                        />
                     </Form.Item>
                     <Form.Item>
                         <Button

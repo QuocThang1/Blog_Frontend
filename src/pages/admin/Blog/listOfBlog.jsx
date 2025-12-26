@@ -27,7 +27,7 @@ const ListOfBlog = () => {
             if (res && res.EC === 0) {
                 setBlogs(res.data || []);
             } else {
-                toast.error(res.EM || "Failed to fetch blogs");
+                toast.error(res.message || "Failed to fetch blogs");
             }
         } catch (error) {
             console.error("Fetch blogs error:", error);
@@ -54,11 +54,11 @@ const ListOfBlog = () => {
                 toast.success(res.EM || "Blog deleted successfully");
                 fetchBlogs();
             } else {
-                toast.error(res.EM || "Failed to delete blog");
+                toast.error(res.message || "Failed to delete blog");
             }
         } catch (error) {
             console.error("Delete blog error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to delete blog");
+            toast.error(error.message || "Failed to delete blog");
         }
     };
 
@@ -149,7 +149,7 @@ const ListOfBlog = () => {
             title: "Category",
             dataIndex: ["category", "name"],
             key: "category",
-            width: 120,
+            width: 130,
             render: (text) => <Tag color="green">{text || "N/A"}</Tag>,
         },
         {

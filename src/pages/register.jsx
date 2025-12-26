@@ -29,13 +29,13 @@ const Register = () => {
                 toast.success(res.EM || "Registration successful!", { autoClose: 2000 });
                 setTimeout(() => navigate("/login"), 2000);
             } else {
-                toast.error(res.EM || "Registration failed. Please try again.", {
+                toast.error(res.mesage || "Registration failed. Please try again.", {
                     autoClose: 2000,
                 });
             }
         } catch (error) {
             console.error("Registration error:", error);
-            toast.error(error?.response?.data?.message || "Registration failed. Please try again.", {
+            toast.error(error.message || "Registration failed. Please try again.", {
                 autoClose: 2000,
             });
         } finally {
