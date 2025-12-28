@@ -64,7 +64,7 @@ const ListOfSubmissions = () => {
             if (res && res.EC === 0) {
                 setSubmissions(res.data || []);
             } else {
-                toast.error(res.EM || "Failed to fetch submissions");
+                toast.error(res.message || "Failed to fetch submissions");
             }
         } catch (error) {
             console.error("Fetch submissions error:", error);
@@ -82,11 +82,11 @@ const ListOfSubmissions = () => {
                 fetchStats();
                 fetchSubmissions();
             } else {
-                toast.error(res.EM || "Failed to approve submission");
+                toast.error(res.message || "Failed to approve submission");
             }
         } catch (error) {
             console.error("Approve error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to approve submission");
+            toast.error(error?.response?.data?.message || "Failed to approve submission");
         }
     };
 
@@ -98,11 +98,11 @@ const ListOfSubmissions = () => {
                 fetchStats();
                 fetchSubmissions();
             } else {
-                toast.error(res.EM || "Failed to reject submission");
+                toast.error(res.message || "Failed to reject submission");
             }
         } catch (error) {
             console.error("Reject error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to reject submission");
+            toast.error(error.message || "Failed to reject submission");
         }
     };
 
@@ -114,11 +114,11 @@ const ListOfSubmissions = () => {
                 fetchStats();
                 fetchSubmissions();
             } else {
-                toast.error(res.EM || "Failed to delete submission");
+                toast.error(res.message || "Failed to delete submission");
             }
         } catch (error) {
             console.error("Delete error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to delete submission");
+            toast.error(error.message || "Failed to delete submission");
         }
     };
 

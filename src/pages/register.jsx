@@ -29,18 +29,36 @@ const Register = () => {
                 toast.success(res.EM || "Registration successful!", { autoClose: 2000 });
                 setTimeout(() => navigate("/login"), 2000);
             } else {
-                toast.error(res.EM || "Registration failed. Please try again.", {
+                toast.error(res.mesage || "Registration failed. Please try again.", {
                     autoClose: 2000,
                 });
             }
         } catch (error) {
             console.error("Registration error:", error);
-            toast.error(error?.response?.data?.message || "Registration failed. Please try again.", {
+            toast.error(error.message || "Registration failed. Please try again.", {
                 autoClose: 2000,
             });
         } finally {
             setLoading(false);
         }
+    };
+
+    const validatePhoneNumber = (_, value) => {
+        if (!value) return Promise.resolve();
+
+        const cleanValue = value.replace(/\s+/g, '');
+
+        const vnFormat1 = /^0\d{9}$/;
+
+        const vnFormat2 = /^\+84\d{9}$/;
+
+        if (vnFormat1.test(cleanValue) || vnFormat2.test(cleanValue)) {
+            return Promise.resolve();
+        }
+
+        return Promise.reject(
+            new Error("Vietnamese phone numbers must start with 0 or +84 and have 10 digits!")
+        );
     };
 
     return (
@@ -142,13 +160,14 @@ const Register = () => {
                         name="phone"
                         rules={[
                             { required: true, message: "Please input your phone number!" },
-                            { pattern: /^[0-9]{10,11}$/, message: "Please enter a valid phone number!" }
+                            { validator: validatePhoneNumber }
                         ]}
                     >
                         <Input
                             prefix={<PhoneOutlined style={{ color: '#000000' }} />}
-                            placeholder="Phone Number"
+                            placeholder="Phone Number (e.g., 0987654321 or +84987654321)"
                             size="large"
+                            maxLength={13}
                         />
                     </Form.Item>
 

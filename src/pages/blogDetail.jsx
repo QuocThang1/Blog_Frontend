@@ -111,13 +111,13 @@ const BlogDetail = () => {
             if (res && res.EC === 0) {
                 setIsLiked(res.data.isLiked);
                 setLikesCount(res.data.likesCount);
-                toast.success(res.data.isLiked ? "Liked!" : "Unliked!");
+                toast.success(res.EM || (res.data.isLiked ? "Liked!" : "Unliked!"));
             } else {
                 toast.error(res.message || "Failed to like blog");
             }
         } catch (error) {
             console.error("Like blog error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to like blog");
+            toast.error(error.message || "Failed to like blog");
         } finally {
             setLiking(false);
         }
@@ -172,7 +172,7 @@ const BlogDetail = () => {
 
         try {
             const res = await translateApi(originalContent, translationLang);
-            
+
             if (res && res[translationLang]) {
                 // ✅ Thay trực tiếp nội dung hiển thị
                 setDisplayContent(res[translationLang]);
@@ -250,7 +250,7 @@ const BlogDetail = () => {
                             <h1 className="blog-detail-title">{blog.title}</h1>
 
                             <div className="blog-detail-date">
-                                {new Date(blog.createdAt).toLocaleDateString("vi-VN", {
+                                {new Date(blog.createdAt).toLocaleDateString("en-US", {
                                     year: "numeric",
                                     month: "long",
                                     day: "numeric",

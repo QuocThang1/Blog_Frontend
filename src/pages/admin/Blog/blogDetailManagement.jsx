@@ -30,7 +30,7 @@ const BlogDetailManagement = () => {
                 setLikesCount(res.data.likesCount || 0);
                 await checkLikeStatus();
             } else {
-                toast.error(res.EM || "Failed to fetch blog");
+                toast.error(res.message || "Failed to fetch blog");
                 navigate(-1);
             }
         } catch (error) {
@@ -63,11 +63,11 @@ const BlogDetailManagement = () => {
                 setLikesCount(res.data.likesCount);
                 toast.success(res.data.isLiked ? "Liked!" : "Unliked!");
             } else {
-                toast.error(res.EM || "Failed to like blog");
+                toast.error(res.message || "Failed to like blog");
             }
         } catch (error) {
             console.error("Like blog error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to like blog");
+            toast.error(error.message || "Failed to like blog");
         } finally {
             setLiking(false);
         }
