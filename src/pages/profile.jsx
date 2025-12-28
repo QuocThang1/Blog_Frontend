@@ -120,7 +120,7 @@ const Profile = () => {
             return Promise.reject(new Error("Each word must be at least 2 characters!"));
         }
 
-        if (/[.,;:!?@#$%^&*()_+=\[\]{}<>\\|\/~`]/.test(value)) {
+        if (/[.,;:!?@#$%^&*()_+=[\]{}<>\\|/~`]/.test(value)) {
             return Promise.reject(new Error("Full name cannot contain special characters!"));
         }
 
