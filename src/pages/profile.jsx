@@ -190,7 +190,7 @@ const Profile = () => {
                         <Select
                             placeholder="Select Gender"
                             size="large"
-                            className="profile-input"
+                            className="profile-input  profile-gender-blue"
                         >
                             <Select.Option value="male">Male</Select.Option>
                             <Select.Option value="female">Female</Select.Option>

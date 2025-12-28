@@ -88,7 +88,8 @@
 /* Placeholder */
 .register-form .custom-input.ant-input::placeholder,
 .register-form .custom-input.ant-input-password input::placeholder,
-.register-form .custom-input.ant-picker input::placeholder {
+.register-form .custom-input.ant-picker input::placeholder,
+.register-form .custom-input .ant-select-selection-placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 

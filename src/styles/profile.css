@@ -73,7 +73,8 @@
 }
 
 .profile-input.ant-input::placeholder,
-.profile-input.ant-picker input::placeholder {
+.profile-input.ant-picker input::placeholder,
+.profile-input .ant-select-selection-placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
@@ -95,6 +96,26 @@
 .profile-input .ant-picker-suffix,
 .profile-input .ant-select-arrow {
   color: rgba(100, 181, 246, 0.8);
+}
+
+
+/* Gender Select - Fixed Blue Background */
+.profile-gender-blue .ant-select-selector {
+  background: rgba(15, 30, 50, 0.8) !important;
+  border-color: rgba(15, 30, 50, 0.8) !important;
+  color: #ffffff !important;
+}
+
+.profile-gender-blue .ant-select-selector:hover,
+.profile-gender-blue.ant-select-focused .ant-select-selector,
+.profile-gender-blue .ant-select-selector:focus {
+  background: rgba(15, 30, 50, 0.8) !important;
+  border-color: rgba(15, 30, 50, 0.8) !important;
+  box-shadow: none !important;
+}
+
+.profile-gender-blue .ant-select-selection-item {
+  color: #ffffff !important;
 }
 
 .profile-submit-button {
