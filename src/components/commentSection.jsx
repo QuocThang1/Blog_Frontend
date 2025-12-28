@@ -22,8 +22,10 @@ const CommentSection = ({ blogId }) => {
         fetchComments();
 
         const SOCKET_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+        const token = localStorage.getItem("access_token");
         socketRef.current = io(SOCKET_URL, {
             transports: ['websocket', 'polling'],
+            auth: { token },
             reconnection: true,
             reconnectionDelay: 1000,
             reconnectionDelayMax: 5000,

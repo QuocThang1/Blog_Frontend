@@ -328,7 +328,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                         </Upload>
                     )}
                     <div style={{ color: "rgba(255, 255, 255, 0.6)", marginTop: 8, fontSize: 12 }}>
-                        Supported formats: JPG, PNG, GIF. Max size: 5MB
+                        Supported formats: JPG, PNG
                     </div>
                 </Form.Item>
             </Form>
