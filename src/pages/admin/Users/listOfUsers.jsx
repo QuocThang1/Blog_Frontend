@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Tag, Space, Button, Input, Popconfirm, Empty, Tooltip, Modal, Spin, Row, Col, Card, List, Avatar, Divider, Alert, Statistic } from "antd";
 import { EditOutlined, DeleteOutlined, SearchOutlined, BarChartOutlined, CheckCircleOutlined, FireOutlined, EyeOutlined, MessageOutlined } from "@ant-design/icons";
 import { toast } from "react-toastify";
-import { getAllUsersApi } from "../../../utils/Api/userAPI";
+import { getAllUsersApi } from "../../../utils/Api/userApi";
 import { getUserInsights, getUserRecommendations } from "../../../utils/Api/adminApi";
 import "../../../styles/adminManagement.css";
 

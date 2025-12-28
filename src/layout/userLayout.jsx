@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import UserSidebar from "../components/UserSidebar";
+import UserSidebar from "../components/userSidebar";
 import "../styles/userLayout.css";
 
 const { Content } = Layout;
