@@ -70,7 +70,7 @@ export default function UserInsights() {
 
       {loading && <Spin size="large" style={{ display: 'flex', justifyContent: 'center' }} />}
 
-      {data && data.aiInsights && (
+      {data && (
         <div>
           {/* USER STATUS + SUGGESTION COMBINED */}
           <Card style={{ marginBottom: 24, backgroundColor: '#f0f8ff', borderRadius: 8 }}>
@@ -87,7 +87,7 @@ export default function UserInsights() {
               <Col xs={24} md={12}>
                 <h3>💡 Suggestion</h3>
                 <Alert
-                  message={data.aiInsights.engagement_advice || 'Monitor engagement regularly'}
+                  message={data.aiInsights.engagementInfo || 'Monitor engagement regularly'}
                   type="warning"
                   showIcon
                   style={{ marginTop: 8 }}
@@ -113,7 +113,7 @@ export default function UserInsights() {
               <Card>
                 <Statistic
                   title="📊 How to Improve"
-                  value={data.aiInsights.engagement_advice || 'Post more content'}
+                  value={data.aiInsights.riskAssessment || 'Post more content'}
                   valueStyle={{ color: '#1890ff', fontSize: 12 }}
                 />
               </Card>
@@ -133,8 +133,8 @@ export default function UserInsights() {
               <Card>
                 <Statistic
                   title="Days Inactive"
-                  value={data.aiInsights.last_active_days !== undefined ? data.aiInsights.last_active_days : '—'}
-                  valueStyle={{ color: data.aiInsights.last_active_days > 7 ? '#ff4d4f' : '#52c41a' }}
+                  value={data.aiInsights.churnRisk !== undefined ? Math.round(data.aiInsights.churnRisk) + '%' : '—'}
+                  valueStyle={{ color: data.aiInsights.churnRisk > 70 ? '#ff4d4f' : '#52c41a' }}
                 />
               </Card>
             </Col>
