@@ -50,7 +50,7 @@ const TagModal = ({ open, tag, onSuccess, onCancel }) => {
                 form.resetFields();
                 onSuccess();
             } else {
-                toast.error(res.EM || `Failed to ${tag ? "update" : "create"} tag`);
+                toast.error(res.message || `Failed to ${tag ? "update" : "create"} tag`);
             }
         } catch (error) {
             if (error.errorFields) {
@@ -58,7 +58,7 @@ const TagModal = ({ open, tag, onSuccess, onCancel }) => {
                 return;
             }
             console.error("Submit tag error:", error);
-            toast.error(error?.response?.data?.EM || `Failed to ${tag ? "update" : "create"} tag`);
+            toast.error(error.message || `Failed to ${tag ? "update" : "create"} tag`);
         }
     };
 

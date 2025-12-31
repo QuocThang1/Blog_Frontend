@@ -39,7 +39,7 @@ const CategoryModal = ({ open, category, onSuccess, onCancel }) => {
                 form.resetFields();
                 onSuccess();
             } else {
-                toast.error(res.EM || `Failed to ${category ? "update" : "create"} category`);
+                toast.error(res.message || `Failed to ${category ? "update" : "create"} category`);
             }
         } catch (error) {
             if (error.errorFields) {
@@ -47,7 +47,7 @@ const CategoryModal = ({ open, category, onSuccess, onCancel }) => {
                 return;
             }
             console.error("Submit category error:", error);
-            toast.error(error?.response?.data?.EM || `Failed to ${category ? "update" : "create"} category`);
+            toast.error(error.message || `Failed to ${category ? "update" : "create"} category`);
         }
     };
 
