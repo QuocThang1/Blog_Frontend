@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { createBlogApi, updateBlogApi } from "../../../utils/Api/blogApi";
 import { getAllCategoriesApi } from "../../../utils/Api/categoryApi";
 import { getAllTagsApi } from "../../../utils/Api/tagApi";
-import { uploadImageApi } from "../../../utils/Api/uploadImageApi";
+import { uploadImageApi, deleteImageApi } from "../../../utils/Api/uploadImageApi";
 
 const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
     const [form] = Form.useForm();
@@ -14,6 +14,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
     const [tags, setTags] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
     const [imagePublicId, setImagePublicId] = useState("");
+    const [newlyUploadedImageId, setNewlyUploadedImageId] = useState("");
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
@@ -31,11 +32,13 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                 });
                 setImageUrl(blog.image || "");
                 setImagePublicId(blog.imagePublicId || "");
+                setNewlyUploadedImageId("");
             } else {
                 // Create mode
                 form.resetFields();
                 setImageUrl("");
                 setImagePublicId("");
+                setNewlyUploadedImageId("");
             }
         }
     }, [open, blog, form]);
@@ -69,6 +72,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
             if (res && res.EC === 0) {
                 setImageUrl(res.data.url);
                 setImagePublicId(res.data.publicId);
+                setNewlyUploadedImageId(res.data.publicId);
                 toast.success(res.EM || "Image uploaded successfully", { autoClose: 1500 });
                 onUploadSuccess("ok");
             } else {
@@ -84,9 +88,20 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
         }
     };
 
-    const handleRemoveImage = () => {
+    const handleRemoveImage = async () => {
+        if (newlyUploadedImageId) {
+            try {
+                const res = await deleteImageApi(newlyUploadedImageId);
+                if (res && res.EC === 0) {
+                    toast.success(res.EM || "Image deleted from cloud", { autoClose: 1500 });
+                }
+            } catch (error) {
+                console.error("Delete image error:", error);
+            }
+        }
         setImageUrl("");
         setImagePublicId("");
+        setNewlyUploadedImageId("");
     };
 
     const handleSubmit = async () => {
@@ -122,6 +137,7 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
                 form.resetFields();
                 setImageUrl("");
                 setImagePublicId("");
+                setNewlyUploadedImageId("");
                 onSuccess();
             } else {
                 toast.error(res.message || `Failed to ${blog ? "update" : "create"} blog`);
@@ -137,10 +153,21 @@ const BlogModal = ({ open, blog, onSuccess, onCancel }) => {
         }
     };
 
-    const handleCancel = () => {
+    const handleCancel = async () => {
+        if (newlyUploadedImageId) {
+            try {
+                const res = await deleteImageApi(newlyUploadedImageId);
+                if (res && res.EC === 0) {
+                    console.log("Cleaned up uploaded image on cancel");
+                }
+            } catch (error) {
+                console.error("Cleanup image error:", error);
+            }
+        }
         form.resetFields();
         setImageUrl("");
         setImagePublicId("");
+        setNewlyUploadedImageId("");
         onCancel();
     };
 
