@@ -24,7 +24,7 @@ const ListOfCategory = () => {
             if (res && res.EC === 0) {
                 setCategories(res.data || []);
             } else {
-                toast.error(res.EM || "Failed to fetch categories");
+                toast.error(res.message || "Failed to fetch categories");
             }
         } catch (error) {
             console.error("Fetch categories error:", error);
@@ -51,11 +51,11 @@ const ListOfCategory = () => {
                 toast.success(res.EM || "Category deleted successfully");
                 fetchCategories();
             } else {
-                toast.error(res.EM || "Failed to delete category");
+                toast.error(res.message || "Failed to delete category");
             }
         } catch (error) {
             console.error("Delete category error:", error);
-            toast.error(error?.response?.data?.EM || "Failed to delete category");
+            toast.error(error.message || "Failed to delete category");
         }
     };
 

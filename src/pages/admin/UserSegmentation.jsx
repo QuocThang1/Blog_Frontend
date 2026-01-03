@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, Button, Row, Col, Tag, Spin, Table, Statistic, Space, Segmented, Alert } from 'antd';
 import { BarChartOutlined, ReloadOutlined, UserOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
@@ -15,16 +15,24 @@ export default function UserSegmentation() {
 
   const segments = ['ACTIVE', 'DORMANT', 'SPAM', 'QUALITY_CONTRIBUTOR', 'NEW_USER'];
 
+  // Auto fetch segment details when active segment changes
+  useEffect(() => {
+    if (activeSegment) {
+      fetchSegmentDetails(activeSegment);
+    }
+  }, [activeSegment]);
+
   const handleRunSegmentation = async () => {
     setLoading(true);
     try {
       const res = await runSegmentation();
-      setSegmentation(res.data);
+      // Force update with timestamp
+      setSegmentation({ ...res.data, refreshedAt: new Date().getTime() });
       setSelectedSegment('ACTIVE');
-      toast.success('User segmentation completed');
-      fetchSegmentDetails('ACTIVE');
+      setActiveSegment('ACTIVE'); // Reset to ACTIVE after running
+      toast.success('User segmentation completed - refreshing data...');
     } catch (err) {
-      toast.error('Failed to run segmentation');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to run segmentation');
     } finally {
       setLoading(false);
     }
@@ -37,7 +45,7 @@ export default function UserSegmentation() {
       setSegmentDetails(res.data);
       setActiveSegment(segment);
     } catch (err) {
-      toast.error('Failed to load segment details');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to load segment details');
     } finally {
       setSegmentLoading(false);
     }
@@ -62,8 +70,13 @@ export default function UserSegmentation() {
     },
     {
       title: 'Blogs',
-      dataIndex: ['userId', 'blogCount'],
+      dataIndex: 'blogCount',
       key: 'blogs'
+    },
+    {
+      title: 'Comments',
+      dataIndex: 'commentCount',
+      key: 'comments'
     },
     {
       title: 'Churn Risk',
