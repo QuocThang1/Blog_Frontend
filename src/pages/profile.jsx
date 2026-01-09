@@ -47,7 +47,7 @@ const Profile = () => {
                     phone: userData.phone,
                     dob: userData.dob ? dayjs(userData.dob) : null,
                     gender: userData.gender,
-                    categories: userData.categories || [], // <-- thêm categories
+                    categories: userData.categories || [],
                 });
             }
         } catch (error) {
@@ -66,7 +66,7 @@ const Profile = () => {
                 phone: values.phone,
                 dob: values.dob ? values.dob.format("YYYY-MM-DD") : "",
                 gender: values.gender,
-                categories: values.categories || [], // <-- gửi mảng category _id
+                categories: values.categories || [],
             };
 
             const res = await updateProfileApi(profileData);
@@ -74,7 +74,6 @@ const Profile = () => {
             if (res && res.data) {
                 toast.success("Profile updated successfully!");
 
-                // Update auth context
                 setAuth({
                     ...auth,
                     user: {
@@ -88,14 +87,48 @@ const Profile = () => {
                     },
                 });
             } else {
-                toast.error(res.EM || "Failed to update profile");
+                toast.error(res.message || "Failed to update profile");
             }
         } catch (error) {
             console.error("Update profile error:", error);
-            toast.error(error?.response?.data?.message || "Failed to update profile");
+            toast.error(error.message || "Failed to update profile");
         } finally {
             setLoading(false);
         }
+    };
+
+    const validateFullName = (_, value) => {
+        if (!value) return Promise.resolve();
+
+        const trimmedValue = value.trim();
+
+        if (/\s{2,}/.test(value)) {
+            return Promise.reject(new Error("Full name cannot contain consecutive spaces!"));
+        }
+
+        if (value !== trimmedValue) {
+            return Promise.reject(new Error("Full name cannot start or end with spaces!"));
+        }
+
+        const words = trimmedValue.split(/\s+/);
+        if (words.length < 2) {
+            return Promise.reject(new Error("Please enter at least first name and last name!"));
+        }
+
+        const hasInvalidWord = words.some(word => word.length < 2);
+        if (hasInvalidWord) {
+            return Promise.reject(new Error("Each word must be at least 2 characters!"));
+        }
+
+        if (/[.,;:!?@#$%^&*()_+=[\]{}<>\\|/~`]/.test(value)) {
+            return Promise.reject(new Error("Full name cannot contain special characters!"));
+        }
+
+        if (/(.)\1{3,}/.test(value)) {
+            return Promise.reject(new Error("Full name contains invalid pattern!"));
+        }
+
+        return Promise.resolve();
     };
 
     return (
@@ -126,13 +159,22 @@ const Profile = () => {
                     <Form.Item
                         label="Full Name"
                         name="fullName"
-                        rules={[{ required: true, message: "Please input your full name!" }]}
+                        rules={[
+                            { required: true, message: "Please input your full name!" },
+                            { min: 3, message: "Full name must be at least 3 characters!" },
+                            {
+                                pattern: /^[a-zA-ZÀ-ỹ\s]+$/,
+                                message: "Full name can only contain letters and spaces!"
+                            },
+                            { validator: validateFullName }
+                        ]}
                     >
                         <Input
                             prefix={<UserOutlined style={{ color: '#64b5f6' }} />}
-                            placeholder="Full Name"
+                            placeholder="Enter your full name (e.g., Nguyen Van A)"
                             size="large"
                             className="profile-input"
+                            maxLength={50}
                         />
                     </Form.Item>
 
@@ -198,27 +240,27 @@ const Profile = () => {
                         </Select>
                     </Form.Item>
 
-                    {/* NEW: Multi-Select Categories */}
                     <Form.Item label="Preferred Categories" name="categories">
-                    <Select
-                        mode="multiple"
-                        placeholder="Select categories"
-                        size="large"
-                        className="profile-input"
-                        options={categoryOptions}
-                        allowClear
-                        tagRender={({ label, value, closable, onClose }) => (
-                        <Tag
-                            color="#409cff"   // màu xanh dương
-                            closable={closable}
-                            onClose={onClose}
-                            style={{ marginRight: 3 }}
-                        >
-                            {label}
-                        </Tag>
-                        )}
-                    />
+                        <Select
+                            mode="multiple"
+                            placeholder="Select categories"
+                            size="large"
+                            className="profile-input"
+                            options={categoryOptions}
+                            allowClear
+                            tagRender={({ label, closable, onClose }) => (
+                                <Tag
+                                    color="#409cff"
+                                    closable={closable}
+                                    onClose={onClose}
+                                    style={{ marginRight: 3 }}
+                                >
+                                    {label}
+                                </Tag>
+                            )}
+                        />
                     </Form.Item>
+
                     <Form.Item>
                         <Button
                             type="primary"

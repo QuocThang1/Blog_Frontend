@@ -95,7 +95,6 @@ const HomePage = () => {
 
                     <div className="welcome-content">
                         <div className="welcome-badge">
-                            <span className="badge-icon">✨</span>
                             <span className="badge-text">Welcome to Our Blog</span>
                         </div>
 
@@ -112,21 +111,18 @@ const HomePage = () => {
 
                         <div className="welcome-features">
                             <div className="feature-item">
-                                <div className="feature-icon">📚</div>
                                 <div className="feature-text">
                                     <h4>Rich Content</h4>
                                     <p>High-quality articles on various topics</p>
                                 </div>
                             </div>
                             <div className="feature-item">
-                                <div className="feature-icon">💡</div>
                                 <div className="feature-text">
                                     <h4>Expert Writers</h4>
                                     <p>Learn from industry professionals</p>
                                 </div>
                             </div>
                             <div className="feature-item">
-                                <div className="feature-icon">🌍</div>
                                 <div className="feature-text">
                                     <h4>Global Community</h4>
                                     <p>Connect with readers worldwide</p>

@@ -1,6 +1,5 @@
 import axios from '../axios.customize';
 
-// Upload image lên Cloudinary
 const uploadImageApi = (file) => {
     const URL_API = "/v1/api/upload";
     const formData = new FormData();
@@ -13,7 +12,6 @@ const uploadImageApi = (file) => {
     });
 };
 
-// Xóa image từ Cloudinary
 const deleteImageApi = (publicId) => {
     const URL_API = "/v1/api/upload";
     return axios.delete(URL_API, { data: { publicId } });

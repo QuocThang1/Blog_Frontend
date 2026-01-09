@@ -49,7 +49,7 @@ const ListOfUsers = () => {
       setInsightsData(res.data);
       setInsightsModalOpen(true);
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Failed to generate insights');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to generate insights');
     } finally {
       setModalLoading(false);
     }
@@ -63,7 +63,7 @@ const ListOfUsers = () => {
       setRecommendationsData(res.data);
       setRecommendationsModalOpen(true);
     } catch (err) {
-      toast.error(err?.response?.data?.message || 'Failed to generate recommendations');
+      toast.error(err?.response?.data?.EM || err?.response?.data?.message || 'Failed to generate recommendations');
     } finally {
       setModalLoading(false);
     }
@@ -128,7 +128,7 @@ const ListOfUsers = () => {
         <div>
           {categories && categories.length > 0 ? (
             categories.map((cat, index) => (
-              <Tag key={index} color="blue">
+              <Tag key={`${cat._id || cat.name}-${index}`} color="blue">
                 {cat.name}
               </Tag>
             ))
@@ -292,7 +292,7 @@ const ListOfUsers = () => {
                     <h4>🎯 Main Interests</h4>
                     <Space wrap>
                       {insightsData.aiInsights.main_interests.map((interest, idx) => (
-                        <Tag key={idx} color="blue">{interest}</Tag>
+                        <Tag key={`${interest}-${idx}`} color="blue">{interest}</Tag>
                       ))}
                     </Space>
                   </Col>
@@ -336,7 +336,7 @@ const ListOfUsers = () => {
                 <List
                   dataSource={insightsData.aiInsights.key_insights}
                   renderItem={(insight, idx) => (
-                    <List.Item key={idx} style={{ paddingLeft: 0, marginBottom: 8 }}>
+                    <List.Item key={`${insight?.slice(0,30)}-${idx}`} style={{ paddingLeft: 0, marginBottom: 8 }}>
                       <div style={{
                         padding: 12,
                         backgroundColor: '#fffbe6',
