@@ -1,16 +1,35 @@
-# React + Vite
+# AI-Powered Real-time Blog Platform - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Backend Repository:** https://github.com/QuocThang1/Blog_BackEnd
 
-Currently, two official plugins are available:
+## Overview
+This repository contains the frontend source code for the AI-Powered Real-time Blog Platform. The application is designed to provide a dynamic and interactive user experience, featuring real-time community chat and intuitive interfaces for blog submissions and content consumption.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technologies Used
+* React.js
+* Socket.io-client
+* RESTful API Integration
 
-## React Compiler
+## Key Features
+* **Real-time Interaction:** Integrated Socket.io-client to facilitate seamless, instant community chat and live updates without page reloads.
+* **Blog Submission Interface:** User-friendly forms for submitting blog articles and documents.
+* **Content Moderation Feedback:** UI components designed to display automated AI validation statuses and administrative feedback on submitted posts.
+* **Responsive Layout:** Ensured optimal viewing and interaction experiences across various devices and screen sizes.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/QuocThang1/Blog_FrontEnd.git](https://github.com/QuocThang1/Blog_FrontEnd.git)
+Navigate to the project directory:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Bash
+cd Blog_FrontEnd
+
+3. Install the required dependencies:
+   ```bash
+   npm install
+Start the development server:
+
+Bash
+npm start
